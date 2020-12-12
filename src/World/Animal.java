@@ -8,7 +8,8 @@ import java.util.List;
 public class Animal implements IWorldElement, IPositionChangeSender {
     private Vector2d position;
     private final MapDirection mapDirection = MapDirection.N;
-    private final List<IPositionChangeObserver> observers = new ArrayList<>();
+    private final List<IPositionChangeObserver> postionObservers = new ArrayList<>();
+    private final List<IAnimalDeathObserver> isDeadObservers = new ArrayList<>();
     private int energy;
 
 
@@ -78,10 +79,10 @@ public class Animal implements IWorldElement, IPositionChangeSender {
     }
 
     public void addPositionObserver(IPositionChangeObserver observer) {
-        this.observers.add(observer);
+        this.postionObservers.add(observer);
     }
     public void removePositionObserver(IPositionChangeObserver observer) {
-        this.observers.remove(observer);
+        this.postionObservers.remove(observer);
     }
 
     @Override
@@ -90,9 +91,20 @@ public class Animal implements IWorldElement, IPositionChangeSender {
     }
 
     private void positionChanged(Vector2d oldPos) {
-        for(var observer : this.observers) {
+        for(var observer : this.postionObservers) {
             observer.positionChanged(oldPos, this.getPosition(), this);
         }
+    }
+
+    public void addIsDeadObserver(IAnimalDeathObserver observer) {
+        isDeadObservers.add(observer);
+    }
+    public void removeIsDeadObserver(IAnimalDeathObserver observer) {
+        isDeadObservers.remove(observer);
+    }
+
+    public void kill() {
+        isDeadObservers.forEach(observer -> observer.animalIsDead(this));
     }
 
 }
