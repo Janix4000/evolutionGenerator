@@ -77,10 +77,10 @@ public class Animal implements IWorldElement, IPositionChangeSender {
         return position;
     }
 
-    public void addObserver(IPositionChangeObserver observer) {
+    public void addPositionObserver(IPositionChangeObserver observer) {
         this.observers.add(observer);
     }
-    public void removeObserver(IPositionChangeObserver observer) {
+    public void removePositionObserver(IPositionChangeObserver observer) {
         this.observers.remove(observer);
     }
 

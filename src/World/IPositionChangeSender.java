@@ -1,7 +1,7 @@
 package World;
 
 public interface IPositionChangeSender {
-    void addObserver(IPositionChangeObserver observer);
-    void removeObserver(IPositionChangeObserver observer);
+    void addPositionObserver(IPositionChangeObserver observer);
+    void removePositionObserver(IPositionChangeObserver observer);
     IWorldElement getWorldElement();
 }
