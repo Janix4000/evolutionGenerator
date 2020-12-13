@@ -20,4 +20,14 @@ public class WorldMap implements IWorldBoundaries {
         int y = (nextPosition.y % size.y + size.y) % size.y;
         return new Vector2d(x, y);
     }
+
+    @Override
+    public Vector2d getLowerLeft() {
+        return new Vector2d(0, 0);
+    }
+
+    @Override
+    public Vector2d getUpperRight() {
+        return size;
+    }
 }
