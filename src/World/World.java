@@ -1,11 +1,13 @@
 package World;
 
+import Utility.Vector2d;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
     private final List<Animal> animals = new ArrayList<>();
-
+    private final WorldMap map = new WorldMap(new Vector2d(10 ,10));
     public void makeTick() {
         removeDeadAnimals();
         rotateAnimals();
