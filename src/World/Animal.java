@@ -5,24 +5,33 @@ import Utility.Vector2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Animal implements IWorldElement, IPositionChangeSender {
+public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
     private Vector2d position;
     private final MapDirection mapDirection = MapDirection.N;
-    private final List<IPositionChangeObserver> postionObservers = new ArrayList<>();
+    private final List<IPositionChangeObserver<Animal>> postionObservers = new ArrayList<>();
     private final List<IAnimalDeathObserver> isDeadObservers = new ArrayList<>();
     private int energy;
+    private final IWorldBoundaries boundaries;
 
 
     // private final IWorldMap worldMap;
 
-    public Animal() {
-        this.position = new Vector2d(2, 2);
-        // this.worldMap = new RectangularMap(5, 5);
-        // this.worldMap.place(this);
+    public Animal(IWorldBoundaries boundaries) {
+        this(boundaries, new Vector2d(0 ,0 ));
     }
-    public Animal(Vector2d initialPosition) {
-        this.position = initialPosition;
+    public Animal(IWorldBoundaries boundaries, Vector2d initialPosition) {
+        this.boundaries = boundaries;
+        setPosition(initialPosition);
     }
+
+    private void setPosition(Vector2d newPos) {
+        var oldPos = this.getPosition();
+        newPos = boundaries.getProperNextPosition(newPos);
+        this.position = newPos;
+        positionChanged(oldPos);
+    }
+
+
 
     public String toTestString() {
         return position.toString() + " " + mapDirection.toString();
@@ -58,9 +67,7 @@ public class Animal implements IWorldElement, IPositionChangeSender {
     public void move() {
         var add = mapDirection.toUnitVector();
         var newPos = position.add(add);
-        var oldPos = this.getPosition();
-        this.position = newPos;
-        positionChanged(oldPos);
+        setPosition(newPos);
     }
     public boolean equals(Object other) {
         if (this == other) {
@@ -78,10 +85,10 @@ public class Animal implements IWorldElement, IPositionChangeSender {
         return position;
     }
 
-    public void addPositionObserver(IPositionChangeObserver observer) {
+    public void addPositionObserver(IPositionChangeObserver<Animal> observer) {
         this.postionObservers.add(observer);
     }
-    public void removePositionObserver(IPositionChangeObserver observer) {
+    public void removePositionObserver(IPositionChangeObserver<Animal> observer) {
         this.postionObservers.remove(observer);
     }
 
@@ -107,4 +114,12 @@ public class Animal implements IWorldElement, IPositionChangeSender {
         isDeadObservers.forEach(observer -> observer.animalIsDead(this));
     }
 
+    public int getEnergy() {
+        return energy;
+    }
+
+    @Override
+    public int compareTo(Animal that) {
+        return -(this.energy - that.energy);
+    }
 }
