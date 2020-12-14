@@ -1,6 +1,4 @@
-package World;
-
-import Utility.Vector2d;
+package Utility;
 
 public enum MapDirection {
     S("South", new Vector2d(0, -1)),

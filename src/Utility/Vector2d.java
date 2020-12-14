@@ -31,8 +31,14 @@ public class Vector2d {
     }
 
     static public Vector2d getRandom(int leftBound, int rightBound) {
-        int x = ThreadLocalRandom.current().nextInt(leftBound, rightBound + 1);
-        int y = ThreadLocalRandom.current().nextInt(leftBound, rightBound + 1);
+        int x = ThreadLocalRandom.current().nextInt(leftBound, rightBound);
+        int y = ThreadLocalRandom.current().nextInt(leftBound, rightBound);
+        return new Vector2d(x, y);
+    }
+
+    static public Vector2d getRandom(Vector2d lowerLeft, Vector2d upperRight) {
+        int x = ThreadLocalRandom.current().nextInt(lowerLeft.x, upperRight.x);
+        int y = ThreadLocalRandom.current().nextInt(lowerLeft.y, upperRight.y);
         return new Vector2d(x, y);
     }
 
@@ -78,6 +84,12 @@ public class Vector2d {
     public Vector2d mult(int m) {
         int x = this.x * m;
         int y = this.y * m;
+        return new Vector2d(x, y);
+    }
+
+    public Vector2d div(int m) {
+        int x = this.x / m;
+        int y = this.y / m;
         return new Vector2d(x, y);
     }
 }

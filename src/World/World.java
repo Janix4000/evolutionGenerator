@@ -1,13 +1,14 @@
 package World;
 
-import Utility.Vector2d;
+import World.Entities.Animal;
+import World.Map.WorldMap;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class World {
     private final List<Animal> animals = new ArrayList<>();
-    private final WorldMap map = new WorldMap(new Vector2d(10 ,10));
+    private final WorldMap worldMap = new WorldMap();
     public void makeTick() {
         removeDeadAnimals();
         rotateAnimals();
@@ -29,7 +30,7 @@ public class World {
     }
 
     private void moveAnimals() {
-        animals.forEach(animal -> animal.move());
+        animals.forEach(Animal::move);
     }
 
     private void rotateAnimals() {
@@ -38,6 +39,6 @@ public class World {
 
     private void removeDeadAnimals() {
         // animals.stream().filter(animal -> animal.hasNoEnergy()).forEach(animal -> animal.kill());
-        animals.removeIf(animal -> animal.hasNoEnergy());
+        animals.removeIf(Animal::hasNoEnergy);
     }
 }

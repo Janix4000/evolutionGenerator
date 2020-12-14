@@ -1,25 +1,31 @@
-package World;
+package World.Entities;
 
 import Utility.Vector2d;
+import World.IDeathObserver;
+import World.IPositionChangeObserver;
+import World.Map.IWorldMap;
+import Utility.MapDirection;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static Utility.MapDirection.*;
+
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
     private Vector2d position;
-    private final MapDirection mapDirection = MapDirection.N;
+    private final MapDirection mapDirection = N;
     private final List<IPositionChangeObserver<Animal>> postionObservers = new ArrayList<>();
-    private final List<IAnimalDeathObserver> isDeadObservers = new ArrayList<>();
+    private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
     private int energy;
-    private final IWorldBoundaries boundaries;
+    private final IWorldMap boundaries;
 
 
     // private final IWorldMap worldMap;
 
-    public Animal(IWorldBoundaries boundaries) {
+    public Animal(IWorldMap boundaries) {
         this(boundaries, new Vector2d(0 ,0 ));
     }
-    public Animal(IWorldBoundaries boundaries, Vector2d initialPosition) {
+    public Animal(IWorldMap boundaries, Vector2d initialPosition) {
         this.boundaries = boundaries;
         setPosition(initialPosition);
     }
@@ -103,15 +109,15 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         }
     }
 
-    public void addIsDeadObserver(IAnimalDeathObserver observer) {
+    public void addIsDeadObserver(IDeathObserver<Animal> observer) {
         isDeadObservers.add(observer);
     }
-    public void removeIsDeadObserver(IAnimalDeathObserver observer) {
+    public void removeIsDeadObserver(IDeathObserver<Animal> observer) {
         isDeadObservers.remove(observer);
     }
 
     public void kill() {
-        isDeadObservers.forEach(observer -> observer.animalIsDead(this));
+        isDeadObservers.forEach(observer -> observer.senderIsDead(this));
     }
 
     public int getEnergy() {
