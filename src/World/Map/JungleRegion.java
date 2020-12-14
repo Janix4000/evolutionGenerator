@@ -36,5 +36,7 @@ public class JungleRegion {
         return getLowerLeftJunglePos().add(size);
     }
 
-
+    public boolean isInJungle(Vector2d position ) {
+        return getLowerLeftJunglePos().follow(position) && position.follow(getUpperRightJunglePos());
+    }
 }

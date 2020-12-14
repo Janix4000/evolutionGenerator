@@ -11,7 +11,10 @@ public class App extends PApplet {
     }
 
     public void draw() {
-        line(0, 0, 5, 5);
+        background(0);
+
+        stroke(255);
+        line(0, 0, 250, 250);
     }
 
 }
