@@ -14,7 +14,7 @@ import static Utility.MapDirection.*;
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
     private Vector2d position;
     private final MapDirection mapDirection = N;
-    private final List<IPositionChangeObserver<Animal>> postionObservers = new ArrayList<>();
+    private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
     private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
     private int energy;
     private final IWorldMap boundaries;
@@ -92,10 +92,10 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     }
 
     public void addPositionObserver(IPositionChangeObserver<Animal> observer) {
-        this.postionObservers.add(observer);
+        this.positionObservers.add(observer);
     }
     public void removePositionObserver(IPositionChangeObserver<Animal> observer) {
-        this.postionObservers.remove(observer);
+        this.positionObservers.remove(observer);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     }
 
     private void positionChanged(Vector2d oldPos) {
-        for(var observer : this.postionObservers) {
+        for(var observer : this.positionObservers) {
             observer.positionChanged(oldPos, this.getPosition(), this);
         }
     }
