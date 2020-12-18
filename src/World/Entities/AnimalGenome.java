@@ -48,7 +48,7 @@ public class AnimalGenome {
          validate();
     }
 
-    public void validate() {
+    private void validate() {
         int nextGen = 0;
         for (int i = 0; i < N_GENES; i++) {
             if(gens[i] >= nextGen) {
