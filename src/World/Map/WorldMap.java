@@ -97,8 +97,8 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         if(cells.containsKey(pos)) {
             cells.get(pos).addGrass(grass);
         } else {
-            var cell = cells.put(pos, new WorldMapCell());
-            assert cell != null;
+            var cell =  new WorldMapCell();
+            cells.put(pos,cell);
             cell.addGrass(grass);
             freePositionsManager.removeFreePosition(pos);
         }

@@ -13,7 +13,11 @@ public class Grass implements IWorldElement {
 
     @Override
     public void draw(PGraphics graphics, Rectangle box) {
-
+        var pos = box.position;
+        var size = box.size;
+        graphics.noStroke();
+        graphics.fill(255, 255, 0);
+        graphics.ellipse(pos.x + (float) size.x / 2, pos.y + (float) size.y / 2, size.x , size.y);
     }
 
     public void setPosition(Vector2d position) {

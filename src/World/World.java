@@ -36,7 +36,7 @@ public class World {
     }
 
     private void spawnGrass() {
-
+        worldMap.addGrassesIfPossible();
     }
 
     private void breedAnimals() {
