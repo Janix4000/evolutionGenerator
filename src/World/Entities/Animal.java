@@ -112,7 +112,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         var pos = box.position;
         var size = box.size;
         graphics.noStroke();
-        graphics.fill(0, (float) energy / maxEnergy * 255, 0);
+        graphics.fill(0, 0, (float) energy / maxEnergy * 255);
         graphics.ellipse(pos.x + (float) size.x / 2, pos.y + (float) size.y / 2, size.x , size.y);
         graphics.text(Integer.toString(energy), pos.x, pos.y);
     }

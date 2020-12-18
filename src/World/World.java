@@ -14,7 +14,7 @@ import java.util.List;
 public class World {
     private final List<Animal> animals = new ArrayList<>();
     private final WorldMap worldMap = new WorldMap();
-    private final Vector2d size = new Vector2d(400, 300);
+    private final Vector2d size = new Vector2d(400, 400);
     private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer(worldMap, size);
     private final PGraphics graphics;
     private final Vector2d cellSize;
@@ -71,8 +71,16 @@ public class World {
 
     public PGraphics draw() {
         graphics.beginDraw();
-        graphics.background(255);
-        graphics.fill(0,255, 0);
+
+        graphics.background(0, 200, 0);
+        drawJungle(graphics);
+        drawWorldElements(graphics);
+
+        graphics.endDraw();
+        return graphics;
+    }
+
+    private void drawWorldElements(PGraphics graphics) {
         graphics.smooth();
         for (var cell : worldMap) {
             var representative = cell.getRepresentative();
@@ -81,10 +89,16 @@ public class World {
             int ry = cellSize.y;
             representative.draw(graphics, new Utility.Rectangle(pos, new Vector2d(rx, ry)) );
         }
-
-        graphics.endDraw();
-        return graphics;
     }
+
+    private void drawJungle(PGraphics graphics) {
+        var box = worldMap.getJungleBox();
+        var lt = coordinateTransformer.toWorldCords(box.position);
+        var rb = coordinateTransformer.toWorldCords(box.position.add(box.size));
+        graphics.fill(0, 255, 0);
+        graphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
+    }
+
 
     public void addAnimal(Vector2d pos) {
         Animal animal = new Animal(worldMap, pos);

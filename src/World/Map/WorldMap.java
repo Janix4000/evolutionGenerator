@@ -1,5 +1,6 @@
 package World.Map;
 
+import Utility.Rectangle;
 import Utility.Vector2d;
 import World.Entities.Animal;
 import World.Entities.Grass;
@@ -16,7 +17,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private final FreePositionsManager freePositionsManager;
 
     public WorldMap() {
-        size = new Vector2d(12, 12);
+        size = new Vector2d(30, 30);
         jungleRegion = new JungleRegion(size.div(3), this);
         freePositionsManager = new FreePositionsManager(this, size, jungleRegion);
     }
@@ -156,5 +157,13 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
             res = Vector2d.getRandom(getLowerLeft(), getUpperRight());
         } while(jungleRegion.isInJungle(res));
         return res;
+    }
+
+
+    public Rectangle getJungleBox() {
+        return new Rectangle(
+                jungleRegion.getLowerLeftJunglePos(),
+                jungleRegion.getUpperRightJunglePos().subtract(jungleRegion.getLowerLeftJunglePos())
+        );
     }
 }

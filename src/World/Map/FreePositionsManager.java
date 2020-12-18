@@ -14,11 +14,7 @@ public class FreePositionsManager {
         for(int y = 0; y < size.y; ++y) {
             for (int x = 0; x < size.x; ++x) {
                 var pos= new Vector2d(x, y);
-                if(jungleRegion.isInJungle(pos)) {
-                    insideJungleFreePositions.insertFreePosition(pos);
-                } else {
-                    outsideJungleFreePositions.insertFreePosition(new Vector2d(x, y));
-                }
+                addFreePosition(pos);
             }
         }
     }

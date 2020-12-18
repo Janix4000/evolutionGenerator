@@ -20,7 +20,9 @@ public class JungleRegion implements IRandomPositionGenerator {
     }
 
     public boolean isInJungle(Vector2d position ) {
-        return getLowerLeftJunglePos().follow(position) && position.follow(getUpperRightJunglePos());
+        var ll = getLowerLeftJunglePos();
+        var ur = getUpperRightJunglePos();
+        return position.follow(ll) && position.precedes(ur);
     }
 
     @Override
