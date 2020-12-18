@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AnimalGenom {
-    private final int[] gens = new int[32];
+    static private final int N_GENES = 32;
+    static private final int N_DIF_GENES = 8;
+    private final int[] gens = new int[N_GENES];
 
     public AnimalGenom() {
         randomize();
@@ -15,7 +17,7 @@ public class AnimalGenom {
     }
 
     private void crossOver(AnimalGenom par1, AnimalGenom par2) {
-        int len = 32;
+        int len = N_GENES;
         int i_first = ThreadLocalRandom.current().nextInt(0, len);
         int i_second = ThreadLocalRandom.current().nextInt(i_first, len);
         if (i_first >= 0) System.arraycopy(par1.gens, 0, gens, 0, i_first);
@@ -27,8 +29,8 @@ public class AnimalGenom {
     }
 
     private void randomize() {
-        for (int i = 0; i < 32; ++i) {
-            gens[i] = ThreadLocalRandom.current().nextInt(0, 8);
+        for (int i = 0; i < N_GENES; ++i) {
+            gens[i] = ThreadLocalRandom.current().nextInt(0, N_DIF_GENES);
         }
          Arrays.sort(gens);
          validate();
@@ -36,14 +38,14 @@ public class AnimalGenom {
 
     private void validate() {
         int nextGen = 0;
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < N_GENES; i++) {
             if(gens[i] >= nextGen) {
                 if(gens[i] > nextGen) {
                     gens[i] = nextGen;
                 }
                 nextGen++;
             }
-            if(nextGen == 8) {
+            if(nextGen == N_DIF_GENES) {
                 break;
             }
         }
