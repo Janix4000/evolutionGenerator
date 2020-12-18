@@ -5,7 +5,6 @@ import World.IDeathObserver;
 import World.IPositionChangeObserver;
 import World.Map.IWorldMap;
 import Utility.MapDirection;
-import processing.core.PGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +13,12 @@ import static Utility.MapDirection.*;
 
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
     private Vector2d position;
-    private final MapDirection mapDirection = N;
+    private MapDirection mapDirection = N;
     private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
     private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
     private int energy = 1;
     private final IWorldMap boundaries;
-
+    private final AnimalGenome genome;
 
     // private final IWorldMap worldMap;
 
@@ -29,6 +28,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     public Animal(IWorldMap boundaries, Vector2d initialPosition) {
         this.boundaries = boundaries;
         setPosition(initialPosition);
+        genome = new AnimalGenome();
     }
 
     private void setPosition(Vector2d newPos) {
@@ -76,6 +76,13 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         var newPos = position.add(add);
         setPosition(newPos);
     }
+
+    public void randomlyRotate() {
+        mapDirection = mapDirection.next(genome.getRandomRotation());
+    }
+
+
+
     public boolean equals(Object other) {
         if (this == other) {
             return true;
@@ -87,14 +94,15 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         return this.position == that.position &&
                 this.mapDirection == that.mapDirection;
     }
-
+    @Override
     public Vector2d getPosition() {
         return position;
     }
-
+    @Override
     public void addPositionObserver(IPositionChangeObserver<Animal> observer) {
         this.positionObservers.add(observer);
     }
+    @Override
     public void removePositionObserver(IPositionChangeObserver<Animal> observer) {
         this.positionObservers.remove(observer);
     }

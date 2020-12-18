@@ -51,7 +51,7 @@ public class World {
     }
 
     private void rotateAnimals() {
-        // animals.forEach(animal -> animal.makeRotationMove());
+        animals.forEach(Animal::randomlyRotate);
     }
 
     private void removeDeadAnimals() {
@@ -61,9 +61,8 @@ public class World {
 
     public PGraphics draw() {
         graphics.beginDraw();
-        graphics.background(back);
-        graphics.fill(0,back, 0);
-        back = (back + 1) % 256;
+        graphics.background(255);
+        graphics.fill(0,255, 0);
         for(var animal : animals) {
             var pos = coordinateTransformer.toWorldCords(animal.getPosition());
             int rx = cellSize.x;

@@ -3,20 +3,31 @@ package World.Entities;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AnimalGenom {
+public class AnimalGenome {
     static private final int N_GENES = 32;
     static private final int N_DIF_GENES = 8;
     private final int[] gens = new int[N_GENES];
 
-    public AnimalGenom() {
+    public AnimalGenome() {
         randomize();
     }
 
-    public AnimalGenom(AnimalGenom par1, AnimalGenom par2) {
+    public AnimalGenome(AnimalGenome par1, AnimalGenome par2) {
         crossOver(par1, par2);
     }
 
-    private void crossOver(AnimalGenom par1, AnimalGenom par2) {
+    public int getRandomRotation() {
+        int idx = ThreadLocalRandom.current().nextInt(0, N_GENES);
+        return gens[idx];
+    }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(gens);
+
+    }
+
+    private void crossOver(AnimalGenome par1, AnimalGenome par2) {
         int len = N_GENES;
         int i_first = ThreadLocalRandom.current().nextInt(0, len);
         int i_second = ThreadLocalRandom.current().nextInt(i_first, len);
@@ -49,5 +60,18 @@ public class AnimalGenom {
                 break;
             }
         }
+    }
+
+    public boolean is_proper() {
+        int nextGen = 0;
+        for (int i = 0; i < N_GENES; i++) {
+            if(gens[i] >= nextGen) {
+                if(gens[i] > nextGen) {
+                    return false;
+                }
+                nextGen++;
+            }
+        }
+        return nextGen == N_DIF_GENES;
     }
 }
