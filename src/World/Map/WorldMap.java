@@ -17,7 +17,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private final FreePositionsManager freePositionsManager;
 
     public WorldMap() {
-        size = new Vector2d(30, 30);
+        size = new Vector2d(100, 75);
         jungleRegion = new JungleRegion(size.div(3), this);
         freePositionsManager = new FreePositionsManager(this, size, jungleRegion);
     }

@@ -33,12 +33,28 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         genome = new AnimalGenome();
     }
 
+    public Animal(Animal par0, Animal par1) {
+        boundaries = par0.boundaries;
+        genome = new AnimalGenome(par0.genome, par1.genome);
+        setMaxEnergy(par1.maxEnergy);
+
+        int e0 = par0.energy / 4;
+        par0.consumeEnergy(e0);
+        int e1 = par1.energy / 4;
+        par1.consumeEnergy(e1);
+        setEnergy(e0 + e1);
+    }
+
+    private void setEnergy(int energy) {
+        this.energy = min(energy, maxEnergy);
+    }
+
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
         energy = maxEnergy / 2;
     }
 
-    private void setPosition(Vector2d newPos) {
+    public void setPosition(Vector2d newPos) {
         var oldPos = this.getWorldPosition();
         newPos = boundaries.getProperNextPosition(newPos);
         this.position = newPos;
@@ -71,12 +87,15 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     }
 
     public void addEnergy(int x) {
-        this.energy += x;
-        this.energy = min(this.energy, maxEnergy);
+        setEnergy(energy + x);
     }
 
     public boolean hasNoEnergy() {
         return this.energy <= 0;
+    }
+
+    public boolean canBreed() {
+        return energy >= maxEnergy / 2;
     }
 
     public void move() {
