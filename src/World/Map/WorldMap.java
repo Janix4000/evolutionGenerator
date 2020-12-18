@@ -159,7 +159,6 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         return res;
     }
 
-
     public Rectangle getJungleBox() {
         return new Rectangle(
                 jungleRegion.getLowerLeftJunglePos(),

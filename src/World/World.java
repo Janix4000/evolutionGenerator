@@ -38,6 +38,27 @@ public class World {
         spawnGrass();
     }
 
+
+    public void addAnimal(Vector2d pos) {
+        Animal animal = new Animal(worldMap, pos);
+        animal.setMaxEnergy(100);
+        addAnimal(animal);
+    }
+
+    private void addAnimal(Animal animal) {
+        animals.add(animal);
+        worldMap.add(animal);
+    }
+
+    private void spawnFirstAnimals(int n) {
+        for (int i = 0; i < n; ++i) {
+            addAnimal(Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
+        }
+        for (int i = 0; i < n; ++i) {
+            worldMap.addGrassesIfPossible();
+        }
+    }
+
     private void spawnGrass() {
         worldMap.addGrassesIfPossible();
     }
@@ -106,24 +127,4 @@ public class World {
         graphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
     }
 
-
-    public void addAnimal(Vector2d pos) {
-        Animal animal = new Animal(worldMap, pos);
-        animal.setMaxEnergy(100);
-        addAnimal(animal);
-    }
-
-    private void addAnimal(Animal animal) {
-        animals.add(animal);
-        worldMap.add(animal);
-    }
-
-    private void spawnFirstAnimals(int n) {
-        for (int i = 0; i < n; ++i) {
-            addAnimal(Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
-        }
-        for (int i = 0; i < n; ++i) {
-            worldMap.addGrassesIfPossible();
-        }
-    }
 }
