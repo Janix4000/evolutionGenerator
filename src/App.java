@@ -1,7 +1,8 @@
+import World.World;
 import processing.core.PApplet;
 
 public class App extends PApplet {
-
+    private World world;
     public static void main(String[] args) {
         PApplet.main("App", args);
     }
@@ -10,11 +11,27 @@ public class App extends PApplet {
         size(800, 600);
     }
 
-    public void draw() {
-        background(0);
+    public void setup() {
+        world = new World(this);
 
-        stroke(255);
-        line(0, 0, 250, 250);
     }
 
+    public void draw() {
+        update();
+        render();
+    }
+
+    private void update() {
+        if(keyPressed) {
+            world.makeTick();
+            System.out.println(key);
+        }
+    }
+
+    private void render() {
+        background(0);
+
+        var worldGraphic = world.draw();
+        image(worldGraphic, 0 ,0);
+    }
 }

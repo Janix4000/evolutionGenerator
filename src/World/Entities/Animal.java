@@ -5,6 +5,7 @@ import World.IDeathObserver;
 import World.IPositionChangeObserver;
 import World.Map.IWorldMap;
 import Utility.MapDirection;
+import processing.core.PGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     private final MapDirection mapDirection = N;
     private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
     private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
-    private int energy;
+    private int energy = 1;
     private final IWorldMap boundaries;
 
 
