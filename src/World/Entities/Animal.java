@@ -15,34 +15,50 @@ import static Utility.MapDirection.*;
 import static java.lang.Integer.min;
 
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
+
+    private static int NEXT_ID = 0;
+    private int id;
     private Vector2d position;
     private MapDirection mapDirection = N;
+
     private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
     private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
+
     private int maxEnergy = 1;
     private int energy = 1;
+
     private final IWorldMap boundaries;
     private final AnimalGenome genome;
+    private int nChildren = 0;
 
     public Animal(IWorldMap boundaries) {
-        this(boundaries, new Vector2d(0 ,0 ));
+        this.boundaries = boundaries;
+        genome = new AnimalGenome();
+        this.id = NEXT_ID++;
     }
     public Animal(IWorldMap boundaries, Vector2d initialPosition) {
-        this.boundaries = boundaries;
+        this(boundaries);
         setPosition(initialPosition);
-        genome = new AnimalGenome();
     }
 
     public Animal(Animal par0, Animal par1) {
-        boundaries = par0.boundaries;
-        genome = new AnimalGenome(par0.genome, par1.genome);
+        this(par0.boundaries);
         setMaxEnergy(par1.maxEnergy);
+        setEnergy(0);
 
-        int e0 = par0.energy / 4;
-        par0.consumeEnergy(e0);
-        int e1 = par1.energy / 4;
-        par1.consumeEnergy(e1);
-        setEnergy(e0 + e1);
+        par0.assignChild(this);
+        par1.assignChild(this);
+    }
+
+    public int getNChildren() {
+        return nChildren;
+    }
+
+    private void assignChild(Animal child) {
+        nChildren++;
+        int e = energy / 4;
+        consumeEnergy(e);
+        child.addEnergy(e);
     }
 
     private void setEnergy(int energy) {
@@ -61,12 +77,9 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         positionChanged(oldPos);
     }
 
-
-
     public String toTestString() {
         return position.toString() + " " + mapDirection.toString();
     }
-
 
     @Override
     public String toString() {
@@ -174,5 +187,9 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     @Override
     public int compareTo(Animal that) {
         return -(this.energy - that.energy);
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

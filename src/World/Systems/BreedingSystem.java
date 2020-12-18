@@ -8,6 +8,7 @@ import World.Map.WorldMapCell;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class BreedingSystem {
     private final IWorldMap map;
@@ -16,8 +17,8 @@ public class BreedingSystem {
         this.map = map;
     }
 
-    public ArrayList<Animal> getChildren(Iterator<WorldMapCell> it) {
-        ArrayList<Animal> children = new ArrayList<>();
+    public List<AnimalsFamily> getChildren(Iterator<WorldMapCell> it) {
+        ArrayList<AnimalsFamily> children = new ArrayList<>();
 
         while(it.hasNext()) {
             var cell = it.next();
@@ -33,7 +34,7 @@ public class BreedingSystem {
             Animal child = new Animal(par0, par1);
             Vector2d pos = generatePositionForChild(par0.getWorldPosition());
             child.setPosition(pos);
-            children.add(child);
+            children.add(new AnimalsFamily(par0, par1, child));
         }
 
         return children;

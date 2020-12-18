@@ -66,8 +66,8 @@ public class World {
     private void breedAnimals() {
         BreedingSystem breedingSystem = new BreedingSystem(worldMap);
         var children = breedingSystem.getChildren(worldMap.iterator());
-        for (var child : children) {
-            addAnimal(child);
+        for (var family : children) {
+            addAnimal(family.child);
         }
     }
 
