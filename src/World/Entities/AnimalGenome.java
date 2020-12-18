@@ -1,5 +1,6 @@
 package World.Entities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -47,7 +48,7 @@ public class AnimalGenome {
          validate();
     }
 
-    private void validate() {
+    public void validate() {
         int nextGen = 0;
         for (int i = 0; i < N_GENES; i++) {
             if(gens[i] >= nextGen) {
@@ -59,6 +60,14 @@ public class AnimalGenome {
             if(nextGen == N_DIF_GENES) {
                 break;
             }
+        }
+        if(nextGen < N_DIF_GENES) {
+            int idx = 0;
+            for(; nextGen < N_DIF_GENES; ++nextGen) {
+                gens[idx++] = nextGen;
+            }
+            Arrays.sort(gens);
+            validate();
         }
     }
 
