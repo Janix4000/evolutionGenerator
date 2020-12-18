@@ -13,12 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Utility.MapDirection.*;
+import static java.lang.Integer.min;
 
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
     private Vector2d position;
     private MapDirection mapDirection = N;
     private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
     private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
+    private int maxEnergy = 1;
     private int energy = 1;
     private final IWorldMap boundaries;
     private final AnimalGenome genome;
@@ -32,6 +34,11 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         this.boundaries = boundaries;
         setPosition(initialPosition);
         genome = new AnimalGenome();
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
+        energy = maxEnergy / 2;
     }
 
     private void setPosition(Vector2d newPos) {
@@ -68,6 +75,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
 
     public void addEnergy(int x) {
         this.energy += x;
+        this.energy = min(this.energy, maxEnergy);
     }
 
     public boolean hasNoEnergy() {
@@ -107,7 +115,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         var pos = box.position;
         var size = box.size;
         graphics.noStroke();
-        graphics.fill(0, 255, 0);
+        graphics.fill(0, (float) energy / maxEnergy * 255, 0);
         graphics.ellipse(pos.x + (float) size.x / 2, pos.y + (float) size.y / 2, size.x , size.y);
     }
 

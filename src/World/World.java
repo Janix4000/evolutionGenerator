@@ -48,6 +48,7 @@ public class World {
 
     private void moveAnimals() {
         animals.forEach(Animal::move);
+        animals.forEach(a -> a.consumeEnergy(1));
     }
 
     private void rotateAnimals() {
@@ -76,6 +77,12 @@ public class World {
         return graphics;
     }
 
+    public void addAnimal(Vector2d pos) {
+        Animal animal = new Animal(worldMap, pos);
+        animal.setMaxEnergy(20);
+        addAnimal(animal);
+    }
+
     private void addAnimal(Animal animal) {
         animals.add(animal);
         worldMap.add(animal);
@@ -83,8 +90,7 @@ public class World {
 
     private void spawnFirstAnimals(int n) {
         for (int i = 0; i < n; ++i) {
-            Animal animal = new Animal(worldMap, Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
-            addAnimal(animal);
+            addAnimal(Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
         }
     }
 }
