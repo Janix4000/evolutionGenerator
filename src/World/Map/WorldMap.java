@@ -59,17 +59,20 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     }
 
     private void removeFromProperCell(Animal animal) {
-        var pos = animal.getPosition();
-        var cell = cells.get(pos);
+        removeFromProperCell(animal, animal.getWorldPosition());
+    }
+    private void removeFromProperCell(Animal animal, Vector2d position) {
+        var cell = cells.get(position);
         cell.remove(animal);
         if(cell.isEmpty()) {
-            cells.remove(pos);
-            freePositionsManager.addFreePosition(pos);
+            cells.remove(position);
+            freePositionsManager.addFreePosition(position);
         }
     }
 
+
     private void removeFromProperCell(Grass grass) {
-        var pos = grass.getPosition();
+        var pos = grass.getWorldPosition();
         var cell = cells.get(pos);
         cell.removeGrass();
         if(cell.isEmpty()) {
@@ -79,7 +82,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     }
 
     private void putInProperCell(Animal animal) {
-        var pos = animal.getPosition();
+        var pos = animal.getWorldPosition();
         if(cells.containsKey(pos)) {
             cells.get(pos).add(animal);
         } else {
@@ -90,7 +93,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         }
     }
     private void putInProperCell(Grass grass) {
-        var pos = grass.getPosition();
+        var pos = grass.getWorldPosition();
         if(cells.containsKey(pos)) {
             cells.get(pos).addGrass(grass);
         } else {
@@ -104,7 +107,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal sender) {
         var oldCell = cells.get(oldPosition);
-        oldCell.remove(sender);
+        removeFromProperCell(sender, oldPosition);
         putInProperCell(sender);
     }
 

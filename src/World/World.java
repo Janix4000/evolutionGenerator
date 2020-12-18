@@ -7,6 +7,7 @@ import World.Map.WorldMap;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,6 @@ public class World {
     private final Vector2d cellSize;
 
 
-    private int back = 0;
     public World(PApplet ps) {
         graphics = ps.createGraphics(size.x, size.y);
         cellSize = new Vector2d(size.x / worldMap.getSize().x, size.y / worldMap.getSize().y);
@@ -63,12 +63,15 @@ public class World {
         graphics.beginDraw();
         graphics.background(255);
         graphics.fill(0,255, 0);
-        for(var animal : animals) {
-            var pos = coordinateTransformer.toWorldCords(animal.getPosition());
+        graphics.smooth();
+        for (var cell : worldMap) {
+            var representative = cell.getRepresentative();
+            var pos = coordinateTransformer.toWorldCords(representative.getWorldPosition());
             int rx = cellSize.x;
             int ry = cellSize.y;
-            graphics.ellipse(pos.x, pos.y, rx, ry);
+            representative.draw(graphics, new Utility.Rectangle(pos, new Vector2d(rx, ry)) );
         }
+
         graphics.endDraw();
         return graphics;
     }

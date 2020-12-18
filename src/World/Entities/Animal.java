@@ -1,10 +1,13 @@
 package World.Entities;
 
+import Utility.Rectangle;
 import Utility.Vector2d;
 import World.IDeathObserver;
 import World.IPositionChangeObserver;
 import World.Map.IWorldMap;
 import Utility.MapDirection;
+import processing.core.PConstants;
+import processing.core.PGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     }
 
     private void setPosition(Vector2d newPos) {
-        var oldPos = this.getPosition();
+        var oldPos = this.getWorldPosition();
         newPos = boundaries.getProperNextPosition(newPos);
         this.position = newPos;
         positionChanged(oldPos);
@@ -95,9 +98,20 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
                 this.mapDirection == that.mapDirection;
     }
     @Override
-    public Vector2d getPosition() {
+    public Vector2d getWorldPosition() {
         return position;
     }
+
+    @Override
+    public void draw(PGraphics graphics, Rectangle box) {
+        var pos = box.position;
+        var size = box.size;
+        graphics.noStroke();
+        float rx = (float) size.x / 2;
+        float ry = (float) size.y / 2;
+        graphics.ellipse(pos.x + rx, pos.y + ry,rx ,ry );
+    }
+
     @Override
     public void addPositionObserver(IPositionChangeObserver<Animal> observer) {
         this.positionObservers.add(observer);
@@ -114,7 +128,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
 
     private void positionChanged(Vector2d oldPos) {
         for(var observer : this.positionObservers) {
-            observer.positionChanged(oldPos, this.getPosition(), this);
+            observer.positionChanged(oldPos, this.getWorldPosition(), this);
         }
     }
 
