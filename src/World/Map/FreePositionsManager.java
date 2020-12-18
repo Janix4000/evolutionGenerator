@@ -55,7 +55,7 @@ public class FreePositionsManager {
     private Vector2d getRandomisedFreePosition() {
         Vector2d freePos;
         do {
-            freePos = positionGenerator.getNextRandomValidPosition();
+            freePos = positionGenerator.getRandomValidPosition();
         } while(!freePoses.contains(freePos));
         return freePos;
     }

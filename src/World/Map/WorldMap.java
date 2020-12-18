@@ -7,9 +7,7 @@ import World.IDeathObserver;
 import World.IPositionChangeObserver;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<WorldMapCell>, IDeathObserver<Animal>, IWorldMap, IRandomPositionGenerator {
     private final HashMap<Vector2d, WorldMapCell> cells = new HashMap<>();
@@ -17,8 +15,6 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private FreePositionsManager insideJungleFreePositions;
     Vector2d size;
     JungleRegion jungleRegion;
-
-
 
     public WorldMap() {
         size = new Vector2d(12, 12);
@@ -184,7 +180,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     }
 
     @Override
-    public Vector2d getNextRandomValidPosition() {
+    public Vector2d getRandomValidPosition() {
         Vector2d res;
         do {
             res = Vector2d.getRandom(getLowerLeft(), getUpperRight());

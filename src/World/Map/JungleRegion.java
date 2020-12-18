@@ -5,27 +5,10 @@ import Utility.Vector2d;
 public class JungleRegion implements IRandomPositionGenerator {
     private final IWorldMap map;
     private final Vector2d size;
-    private int nGrasses = 0;
 
     public JungleRegion(Vector2d size, IWorldMap map) {
         this.size = size;
         this.map = map;
-    }
-
-    public Vector2d getFreePosition() {
-        Vector2d newPos;
-        do {
-            newPos = Vector2d.getRandom(getLowerLeftJunglePos(), getUpperRightJunglePos());
-        } while(map.isOccupied(newPos));
-        return  newPos;
-    }
-
-    public boolean canBeGrassAdded() {
-        return getGrassMaxCapacity() <= nGrasses;
-
-    }
-    public int getGrassMaxCapacity() {
-        return size.x * size.y;
     }
 
     public Vector2d getLowerLeftJunglePos() {
@@ -41,7 +24,7 @@ public class JungleRegion implements IRandomPositionGenerator {
     }
 
     @Override
-    public Vector2d getNextRandomValidPosition() {
+    public Vector2d getRandomValidPosition() {
         return Vector2d.getRandom(getLowerLeftJunglePos(), getUpperRightJunglePos());
     }
 }
