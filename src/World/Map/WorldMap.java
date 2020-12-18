@@ -7,15 +7,39 @@ import World.IDeathObserver;
 import World.IPositionChangeObserver;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
-public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<WorldMapCell>, IDeathObserver<Animal>, IWorldMap {
+public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<WorldMapCell>, IDeathObserver<Animal>, IWorldMap, IRandomPositionGenerator {
     private final HashMap<Vector2d, WorldMapCell> cells = new HashMap<>();
+    private FreePositionsManager outsideJungleFreePositions;
+    private FreePositionsManager insideJungleFreePositions;
     Vector2d size;
     JungleRegion jungleRegion;
+
+
+
     public WorldMap() {
         size = new Vector2d(12, 12);
         jungleRegion = new JungleRegion(size.div(3), this);
+        initFreePositions();
+    }
+
+    private void initFreePositions() {
+        outsideJungleFreePositions = new FreePositionsManager(this);
+        insideJungleFreePositions = new FreePositionsManager(jungleRegion);
+
+        for(int y = 0; y < size.y; ++y) {
+            for (int x = 0; x < size.x; ++x) {
+                var pos= new Vector2d(x, y);
+                if(jungleRegion.isInJungle(pos)) {
+                    insideJungleFreePositions.insertFreePosition(pos);
+                } else {
+                    outsideJungleFreePositions.insertFreePosition(new Vector2d(x, y));
+                }
+            }
+        }
     }
 
     public void add(Animal animal) {
@@ -30,19 +54,29 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         removeFromProperCell(animal);
     }
 
-    public void addGrassesIfPossible() {
-        Vector2d notInJunglePos;
-        do {
-            notInJunglePos = Vector2d.getRandom(getLowerLeft(), getUpperRight());
-        } while (jungleRegion.isInJungle(notInJunglePos) && isOccupied(notInJunglePos));
+    private void addGrassOutsideJungle() {
+        if(outsideJungleFreePositions.isEmpty()) {
+            return;
+        }
+        Vector2d notInJunglePos = outsideJungleFreePositions.getRandomFreePosition();
         Grass grass = new Grass();
         grass.setPosition(notInJunglePos);
         putInProperCell(grass);
+    }
 
-        Vector2d inJunglePos = jungleRegion.getFreePosition();
-        grass = new Grass();
+    private void addGrassInsideJungle() {
+        if(insideJungleFreePositions.isEmpty()) {
+            return;
+        }
+        Vector2d inJunglePos = insideJungleFreePositions.getRandomFreePosition();
+        Grass grass = new Grass();
         grass.setPosition(inJunglePos);
         putInProperCell(grass);
+    }
+
+    public void addGrassesIfPossible() {
+        addGrassOutsideJungle();
+        addGrassInsideJungle();
     }
 
     private void removeFromProperCell(Animal animal) {
@@ -51,6 +85,15 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         cell.remove(animal);
         if(cell.isEmpty()) {
             cells.remove(pos);
+            addToFreePoses(pos);
+        }
+    }
+
+    private void removeFromFreePoses(Vector2d pos) {
+        if(jungleRegion.isInJungle(pos))  {
+            insideJungleFreePositions.removeFreePosition(pos);
+        } else {
+            outsideJungleFreePositions.removeFreePosition(pos);
         }
     }
 
@@ -60,6 +103,15 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         cell.removeGrass();
         if(cell.isEmpty()) {
             cells.remove(pos);
+            addToFreePoses(pos);
+        }
+    }
+
+    private void addToFreePoses(Vector2d pos) {
+        if(jungleRegion.isInJungle(pos))  {
+            insideJungleFreePositions.insertFreePosition(pos);
+        } else {
+            outsideJungleFreePositions.insertFreePosition(pos);
         }
     }
 
@@ -71,6 +123,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
             var cell =  new WorldMapCell();
             cells.put(pos,cell);
             cell.add(animal);
+            removeFromFreePoses(pos);
         }
     }
     private void putInProperCell(Grass grass) {
@@ -81,6 +134,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
             var cell = cells.put(pos, new WorldMapCell());
             assert cell != null;
             cell.addGrass(grass);
+            removeFromFreePoses(pos);
         }
     }
 
@@ -127,5 +181,14 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     @Override
     public boolean isOccupied(Vector2d position) {
         return cells.containsKey(position) && !cells.get(position).isEmpty();
+    }
+
+    @Override
+    public Vector2d getNextRandomValidPosition() {
+        Vector2d res;
+        do {
+            res = Vector2d.getRandom(getLowerLeft(), getUpperRight());
+        } while(jungleRegion.isInJungle(res));
+        return res;
     }
 }

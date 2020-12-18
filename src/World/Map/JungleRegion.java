@@ -2,7 +2,7 @@ package World.Map;
 
 import Utility.Vector2d;
 
-public class JungleRegion {
+public class JungleRegion implements IRandomPositionGenerator {
     private final IWorldMap map;
     private final Vector2d size;
     private int nGrasses = 0;
@@ -38,5 +38,10 @@ public class JungleRegion {
 
     public boolean isInJungle(Vector2d position ) {
         return getLowerLeftJunglePos().follow(position) && position.follow(getUpperRightJunglePos());
+    }
+
+    @Override
+    public Vector2d getNextRandomValidPosition() {
+        return Vector2d.getRandom(getLowerLeftJunglePos(), getUpperRightJunglePos());
     }
 }
