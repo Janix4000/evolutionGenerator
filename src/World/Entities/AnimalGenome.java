@@ -24,8 +24,7 @@ public class AnimalGenome {
 
     @Override
     public String toString() {
-        return Arrays.toString(gens);
-
+        return Arrays.stream(gens).mapToObj(Integer::toString).reduce("", (a, b) -> a + b);
     }
 
     private void crossOver(AnimalGenome par1, AnimalGenome par2) {
