@@ -6,7 +6,6 @@ import World.IDeathObserver;
 import World.IPositionChangeObserver;
 import World.Map.IWorldMap;
 import Utility.MapDirection;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     private int energy = 1;
     private final IWorldMap boundaries;
     private final AnimalGenome genome;
-
-    // private final IWorldMap worldMap;
 
     public Animal(IWorldMap boundaries) {
         this(boundaries, new Vector2d(0 ,0 ));
@@ -117,6 +114,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         graphics.noStroke();
         graphics.fill(0, (float) energy / maxEnergy * 255, 0);
         graphics.ellipse(pos.x + (float) size.x / 2, pos.y + (float) size.y / 2, size.x , size.y);
+        graphics.text(Integer.toString(energy), pos.x, pos.y);
     }
 
     @Override

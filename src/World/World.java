@@ -44,6 +44,15 @@ public class World {
     }
 
     private void feedAnimalsWithGrass() {
+        for(var cell : worldMap) {
+            if(cell.hasAnyAnimals() && cell.hasGrass()) {
+                int grassEnergy = 10;
+                var animals = cell.getBestAnimals();
+                final int energy = grassEnergy / animals.size();
+                animals.forEach(a -> a.addEnergy(energy));
+                cell.removeGrass();
+            }
+        }
     }
 
     private void moveAnimals() {
@@ -79,7 +88,7 @@ public class World {
 
     public void addAnimal(Vector2d pos) {
         Animal animal = new Animal(worldMap, pos);
-        animal.setMaxEnergy(20);
+        animal.setMaxEnergy(100);
         addAnimal(animal);
     }
 

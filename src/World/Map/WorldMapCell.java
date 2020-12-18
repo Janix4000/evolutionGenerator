@@ -44,7 +44,7 @@ public class WorldMapCell {
         }
     }
 
-    List<Animal> getTopAnimals(int n) {
+    public List<Animal> getTopAnimals(int n) {
         if(n > animals.size()) {
             throw new IllegalArgumentException("There is only " + animals.size() + " animals in the cell, wanted top " + n);
         }
@@ -52,7 +52,7 @@ public class WorldMapCell {
         var topN = new ArrayList<Animal>(n);
         return animals.subList(0, n);
     }
-    List<Animal> getBestAnimals() {
+    public List<Animal> getBestAnimals() {
         if(animals.isEmpty()) {
             throw new ArrayIndexOutOfBoundsException("Cannot take any best animal, because there is no animals in the cell");
         }
