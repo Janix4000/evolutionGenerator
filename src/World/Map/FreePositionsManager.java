@@ -2,66 +2,54 @@ package World.Map;
 
 import Utility.Vector2d;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class FreePositionsManager {
-    Set<Vector2d> freePoses = new HashSet<>();
-    IRandomPositionGenerator positionGenerator;
+    private final FreePositionsInRegionsManager outsideJungleFreePositions;
+    private final FreePositionsInRegionsManager insideJungleFreePositions;
+    private final JungleRegion jungleRegion;
+    public FreePositionsManager(IRandomPositionGenerator map, Vector2d size, JungleRegion jungleRegion) {
+        this.jungleRegion = jungleRegion;
+        outsideJungleFreePositions = new FreePositionsInRegionsManager(map);
+        insideJungleFreePositions = new FreePositionsInRegionsManager(jungleRegion);
 
-    FreePositionsManager(IRandomPositionGenerator positionGenerator) {
-        this.positionGenerator = positionGenerator;
-    }
-
-
-    boolean isEmpty() {
-        return freePoses.size() == 0;
-    }
-
-    void removeFreePosition(Vector2d pos) {
-        freePoses.remove(pos);
-    }
-    void insertFreePosition(Vector2d pos) {
-        freePoses.add(pos);
-    }
-
-    public Vector2d getRandomFreePosition() {
-        if(isEmpty()) {
-            throw new IllegalArgumentException("Cannot pop free position, because there are no free positions");
-        }
-        return shouldRandomise() ? getRandomisedFreePosition() : getIteratedFreePosition();
-    }
-
-    public Vector2d popRandomFreePosition() {
-        Vector2d freePos = getRandomFreePosition();
-        removeFreePosition(freePos);
-        return  freePos;
-    }
-
-    private Vector2d getIteratedFreePosition() {
-        int idx = ThreadLocalRandom.current().nextInt(0, freePoses.size());
-        int i = 0;
-        for(var pos : freePoses) {
-            if(i == idx) {
-                return pos;
-            } else {
-                i++;
+        for(int y = 0; y < size.y; ++y) {
+            for (int x = 0; x < size.x; ++x) {
+                var pos= new Vector2d(x, y);
+                if(jungleRegion.isInJungle(pos)) {
+                    insideJungleFreePositions.insertFreePosition(pos);
+                } else {
+                    outsideJungleFreePositions.insertFreePosition(new Vector2d(x, y));
+                }
             }
         }
-        throw new IllegalArgumentException("No free poses?");
     }
 
-    private Vector2d getRandomisedFreePosition() {
-        Vector2d freePos;
-        do {
-            freePos = positionGenerator.getRandomValidPosition();
-        } while(!freePoses.contains(freePos));
-        return freePos;
+    public void addFreePosition(Vector2d pos) {
+        if(jungleRegion.isInJungle(pos))  {
+            insideJungleFreePositions.insertFreePosition(pos);
+        } else {
+            outsideJungleFreePositions.insertFreePosition(pos);
+        }
     }
 
-    private boolean shouldRandomise() {
-        int k = freePoses.size();
-        return k > 2;
+    public void removeFreePosition(Vector2d pos) {
+        if(jungleRegion.isInJungle(pos))  {
+            insideJungleFreePositions.removeFreePosition(pos);
+        } else {
+            outsideJungleFreePositions.removeFreePosition(pos);
+        }
+    }
+
+    public Vector2d getRandomFreePositionInJungle() {
+        if(insideJungleFreePositions.isEmpty()) {
+            return null;
+        }
+        return insideJungleFreePositions.getRandomFreePosition();
+    }
+
+    public Vector2d getRandomFreePositionOutsideJungle() {
+        if(outsideJungleFreePositions.isEmpty()) {
+            return null;
+        }
+        return outsideJungleFreePositions.getRandomFreePosition();
     }
 }
