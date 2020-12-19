@@ -7,7 +7,7 @@ import World.IDeathObserver;
 
 import java.util.ArrayList;
 
-public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal> {
+public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal>, IStatistic {
     private int sum = 0;
     private int nAnimals = 0;
 
@@ -28,5 +28,10 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
     public void senderIsDead(Animal sender, int deathDay) {
         nAnimals--;
         sum -= sender.getNChildren();
+    }
+
+    @Override
+    public String getText() {
+        return  "Average number of children: " + getAverageNumberOfChildren();
     }
 }

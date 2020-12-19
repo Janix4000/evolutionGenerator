@@ -6,7 +6,7 @@ import World.Systems.AnimalsFamily;
 
 import java.util.HashSet;
 
-public class AnimalTargetSystem implements IDeathObserver<Animal> {
+public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
     private Animal target = null;
     private final HashSet<Integer> descendants = new HashSet<>();
     private int deathDay = -1;
@@ -53,6 +53,23 @@ public class AnimalTargetSystem implements IDeathObserver<Animal> {
     @Override
     public void senderIsDead(Animal sender, int deathDay) {
         this.deathDay = deathDay;
+    }
+
+    @Override
+    public String getText() {
+        if (target == null) {
+            return "";
+        } else {
+            String text = target.getGenomeString() + "\n" +
+                "Number of children: " + target.getNChildren() + "\n" +
+                "Total number of descendants: " + getNDescendants() + "\n" +
+                "Birthday: " + target.getBirthDay();
+            if(target.hasNoEnergy()) {
+                text = text + "\n" +
+                    "Day of death: " + deathDay;
+            }
+            return text;
+        }
     }
 }
 

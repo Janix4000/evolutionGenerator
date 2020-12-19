@@ -5,7 +5,7 @@ import World.IDeathObserver;
 
 import java.util.*;
 
-public class BestGenomeStatistics implements IDeathObserver<Animal> {
+public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic {
     private final SortedSet<List<Animal>> genes = new TreeSet<>((a, b) -> -(a.size() - b.size()));
 
 
@@ -49,4 +49,13 @@ public class BestGenomeStatistics implements IDeathObserver<Animal> {
     }
 
 
+    @Override
+    public String getText() {
+        var bestGenomes = getAnimalsWithBestGenomes();
+        if(bestGenomes.isEmpty()) {
+            return "All animals are dead";
+        }
+        return "Best genome: " + bestGenomes.get(0).toString() + "\n" +
+                "There are " + bestGenomes.size() + " with this genome.";
+    }
 }
