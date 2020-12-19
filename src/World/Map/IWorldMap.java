@@ -1,7 +1,6 @@
 package World.Map;
 
 import Utility.Vector2d;
-import World.World;
 
 public interface IWorldMap {
     Vector2d getProperNextPosition(Vector2d nextPosition);

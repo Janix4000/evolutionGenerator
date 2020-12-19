@@ -76,7 +76,7 @@ public class World implements IMapStatistics {
     private void feedAnimalsWithGrass() {
         for(var cell : worldMap) {
             if(cell.hasAnyAnimals() && cell.hasGrass()) {
-                int grassEnergy = 10;
+                int grassEnergy = 40;
                 var animals = cell.getBestAnimals();
                 final int energy = grassEnergy / animals.size();
                 animals.forEach(a -> a.addEnergy(energy));

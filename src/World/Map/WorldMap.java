@@ -120,7 +120,7 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
 
     @Override
     public void senderIsDead(Animal animal, int deathDay) {
-        remove(animal);
+        removeFromProperCell(animal);
     }
 
     @Override

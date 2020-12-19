@@ -6,11 +6,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class FreePositionsInRegionsManager {
-    Set<Vector2d> freePoses = new HashSet<>();
-    IRandomPositionGenerator positionGenerator;
+import static java.lang.Integer.max;
 
-    FreePositionsInRegionsManager(IRandomPositionGenerator positionGenerator) {
+public class FreePositionsInRegionsManager {
+    private final Set<Vector2d> freePoses = new HashSet<>();
+    private final IRandomPositionGenerator positionGenerator;
+    private int maxNCells = 0;
+
+    public FreePositionsInRegionsManager(IRandomPositionGenerator positionGenerator) {
         this.positionGenerator = positionGenerator;
     }
 
@@ -24,6 +27,7 @@ public class FreePositionsInRegionsManager {
     }
     void insertFreePosition(Vector2d pos) {
         freePoses.add(pos);
+        maxNCells = max(maxNCells, freePoses.size());
     }
 
     public Vector2d getRandomFreePosition() {
@@ -62,6 +66,7 @@ public class FreePositionsInRegionsManager {
 
     private boolean shouldRandomise() {
         int k = freePoses.size();
-        return k > 2;
+        int n = maxNCells;
+        return 2 * n < k * k;
     }
 }
