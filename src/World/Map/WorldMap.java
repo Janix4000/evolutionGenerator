@@ -1,5 +1,6 @@
 package World.Map;
 
+import Utility.Config.IWorldMapConfig;
 import Utility.Rectangle;
 import Utility.Vector2d;
 import World.Entities.Animal;
@@ -19,9 +20,10 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private final JungleRegion jungleRegion;
     private final FreePositionsManager freePositionsManager;
 
-    public WorldMap() {
-        size = new Vector2d(100, 75);
-        jungleRegion = new JungleRegion(size.div(3), this);
+
+    public WorldMap(IWorldMapConfig config) {
+        size = config.getWorldSize();
+        jungleRegion = new JungleRegion(config.getJungleSize(), this);
         freePositionsManager = new FreePositionsManager(this, size, jungleRegion);
     }
 

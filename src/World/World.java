@@ -1,5 +1,7 @@
 package World;
 
+import Utility.Config.IWorldConfig;
+import Utility.Config.IWorldMapConfig;
 import Utility.CoordinateTransformer;
 import Utility.Vector2d;
 import World.AnimalStatistics.IMapStatistics;
@@ -14,19 +16,24 @@ import java.util.List;
 
 public class World implements IMapStatistics {
     private final List<Animal> animals = new ArrayList<>();
-    private final WorldMap worldMap = new WorldMap();
+    private final WorldMap worldMap;
     private final Vector2d size = new Vector2d(800, 600);
-    private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer(worldMap, size);
-    private final BreedingSystem breedingSystem = new BreedingSystem(worldMap);
+    private final CoordinateTransformer coordinateTransformer;
+    private final BreedingSystem breedingSystem;
     private final PGraphics graphics;
     private final Vector2d cellSize;
     private int day = 0;
     private int nGrasses = 0;
+    IWorldConfig config;
 
-    public World(PApplet ps) {
+    public World(PApplet ps, IWorldConfig config) {
+        worldMap = new WorldMap(config.getWorldMapConfig());
+        coordinateTransformer = new CoordinateTransformer(worldMap, size);
+        breedingSystem = new BreedingSystem(worldMap);
         graphics = ps.createGraphics(size.x, size.y);
         cellSize = new Vector2d(size.x / worldMap.getSize().x, size.y / worldMap.getSize().y);
-        spawnFirstAnimals(300);
+        this.config = config;
+        spawnFirstAnimals(config.getNStartingAnimals());
     }
 
     public void makeTick() {
@@ -43,7 +50,7 @@ public class World implements IMapStatistics {
 
     public void addAnimal(Vector2d pos) {
         Animal animal = new Animal(worldMap, pos);
-        animal.setMaxEnergy(100);
+        animal.setMaxEnergy(config.getAnimalsStartingEnergy());
         addAnimal(animal);
     }
 
@@ -78,7 +85,7 @@ public class World implements IMapStatistics {
         while(it.hasNext()) {
             var cell = it.next();
             if(cell.hasAnyAnimals() && cell.hasGrass()) {
-                int grassEnergy = 70;
+                int grassEnergy = config.getGrassEnergy();
                 var animals = cell.getBestAnimals();
                 final int energy = grassEnergy / animals.size();
                 animals.forEach(a -> a.addEnergy(energy));
@@ -90,7 +97,7 @@ public class World implements IMapStatistics {
 
     private void moveAnimals() {
         animals.forEach(Animal::move);
-        animals.forEach(a -> a.consumeEnergy(1));
+        animals.forEach(a -> a.consumeEnergy(config.getEnergyCostOfMove()));
     }
 
     private void rotateAnimals() {
