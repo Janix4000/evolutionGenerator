@@ -2,26 +2,26 @@ package World;
 
 import Utility.CoordinateTransformer;
 import Utility.Vector2d;
+import World.AnimalStatistics.IMapStatistics;
 import World.Entities.Animal;
 import World.Map.WorldMap;
 import World.Systems.BreedingSystem;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-public class World {
+public class World implements IMapStatistics {
     private final List<Animal> animals = new ArrayList<>();
     private final WorldMap worldMap = new WorldMap();
     private final Vector2d size = new Vector2d(800, 600);
     private final CoordinateTransformer coordinateTransformer = new CoordinateTransformer(worldMap, size);
+    private final BreedingSystem breedingSystem = new BreedingSystem(worldMap);
     private final PGraphics graphics;
     private final Vector2d cellSize;
-
+    private int day = 0;
+    private int nGrasses = 0;
 
     public World(PApplet ps) {
         graphics = ps.createGraphics(size.x, size.y);
@@ -36,6 +36,8 @@ public class World {
         feedAnimalsWithGrass();
         breedAnimals();
         spawnGrass();
+
+        day++;
     }
 
 
@@ -48,6 +50,7 @@ public class World {
     private void addAnimal(Animal animal) {
         animals.add(animal);
         worldMap.add(animal);
+        animal.setBirthDay(day);
     }
 
     private void spawnFirstAnimals(int n) {
@@ -60,14 +63,13 @@ public class World {
     }
 
     private void spawnGrass() {
-        worldMap.addGrassesIfPossible();
+        nGrasses += worldMap.addGrassesIfPossible();
     }
 
     private void breedAnimals() {
-        BreedingSystem breedingSystem = new BreedingSystem(worldMap);
         var children = breedingSystem.getChildren(worldMap.iterator());
-        for (var family : children) {
-            addAnimal(family.child);
+        for (var child : children) {
+            addAnimal(child);
         }
     }
 
@@ -79,6 +81,7 @@ public class World {
                 final int energy = grassEnergy / animals.size();
                 animals.forEach(a -> a.addEnergy(energy));
                 cell.removeGrass();
+                nGrasses--;
             }
         }
     }
@@ -93,7 +96,7 @@ public class World {
     }
 
     private void removeDeadAnimals() {
-        animals.stream().filter(Animal::hasNoEnergy).forEach(Animal::kill);
+        animals.stream().filter(Animal::hasNoEnergy).forEach(a -> a.kill(day));
         animals.removeIf(Animal::hasNoEnergy);
     }
 
@@ -106,6 +109,23 @@ public class World {
 
         graphics.endDraw();
         return graphics;
+    }
+
+    public float getAverageEnergy() {
+        if(animals.isEmpty()) {
+            return 0;
+        }
+        return (float) animals.stream().reduce(0, (s, a) -> s + a.getEnergy(), Integer::sum) / animals.size();
+    }
+
+    @Override
+    public int getNGrasses() {
+        return nGrasses;
+    }
+
+    @Override
+    public int getNAnimals() {
+        return animals.size();
     }
 
     private void drawWorldElements(PGraphics graphics) {

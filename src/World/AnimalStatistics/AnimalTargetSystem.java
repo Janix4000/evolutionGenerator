@@ -1,19 +1,21 @@
 package World.AnimalStatistics;
 
 import World.Entities.Animal;
+import World.IDeathObserver;
 import World.Systems.AnimalsFamily;
 
 import java.util.HashSet;
 
-public class AnimalTargetSystem {
+public class AnimalTargetSystem implements IDeathObserver<Animal> {
     private Animal target = null;
     private final HashSet<Integer> descendants = new HashSet<>();
-
+    private int deathDay = -1;
 
     public void setTarget(Animal animal) {
         removeTarget();
         target = animal;
         descendants.add(animal.getId());
+        target.addIsDeadObserver(this);
     }
 
     public boolean hasTarget() {
@@ -21,8 +23,12 @@ public class AnimalTargetSystem {
     }
 
     public void removeTarget() {
+        if(target != null) {
+            target.removeIsDeadObserver(this);
+        }
         target = null;
         descendants.clear();
+        deathDay = -1;
     }
 
     public void checkFamily(AnimalsFamily family) {
@@ -44,5 +50,9 @@ public class AnimalTargetSystem {
         return target;
     }
 
+    @Override
+    public void senderIsDead(Animal sender, int deathDay) {
+        this.deathDay = deathDay;
+    }
 }
 

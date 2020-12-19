@@ -3,5 +3,5 @@ package World;
 import World.Entities.Animal;
 
 public interface IDeathObserver<T> {
-    void senderIsDead(T sender);
+    void senderIsDead(T sender, int deathDay);
 }

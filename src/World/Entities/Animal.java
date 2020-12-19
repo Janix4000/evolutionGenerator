@@ -30,6 +30,8 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     private final IWorldMap boundaries;
     private final AnimalGenome genome;
     private int nChildren = 0;
+    private int birthDay;
+
 
     public Animal(IWorldMap boundaries) {
         this.boundaries = boundaries;
@@ -54,6 +56,16 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         return nChildren;
     }
 
+    public void setBirthDay(int birthDay) {
+        this.birthDay = birthDay;
+    }
+    public int getBirthDay() {
+        return birthDay;
+    }
+
+    public String getGenomeString() {
+        return genome.toString();
+    }
     private void assignChild(Animal child) {
         nChildren++;
         int e = energy / 4;
@@ -176,8 +188,8 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
         isDeadObservers.remove(observer);
     }
 
-    public void kill() {
-        isDeadObservers.forEach(observer -> observer.senderIsDead(this));
+    public void kill(int deathDay) {
+        isDeadObservers.forEach(observer -> observer.senderIsDead(this, deathDay));
     }
 
     public int getEnergy() {

@@ -34,29 +34,30 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         removeFromProperCell(animal);
     }
 
-    private void addGrassOutsideJungle() {
+    private int addGrassOutsideJungle() {
         Vector2d notInJunglePos = freePositionsManager.getRandomFreePositionOutsideJungle();
         if(notInJunglePos == null) {
-            return;
+            return 0;
         }
         Grass grass = new Grass();
         grass.setPosition(notInJunglePos);
         putInProperCell(grass);
+        return 1;
     }
 
-    private void addGrassInsideJungle() {
+    private int addGrassInsideJungle() {
         Vector2d inJunglePos = freePositionsManager.getRandomFreePositionInJungle();
         if(inJunglePos == null) {
-            return;
+            return 0;
         }
         Grass grass = new Grass();
         grass.setPosition(inJunglePos);
         putInProperCell(grass);
+        return 1;
     }
 
-    public void addGrassesIfPossible() {
-        addGrassOutsideJungle();
-        addGrassInsideJungle();
+    public int addGrassesIfPossible() {
+        return addGrassOutsideJungle() + addGrassInsideJungle();
     }
 
     private void removeFromProperCell(Animal animal) {
@@ -107,7 +108,6 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition, Animal sender) {
-        var oldCell = cells.get(oldPosition);
         removeFromProperCell(sender, oldPosition);
         putInProperCell(sender);
     }
@@ -119,8 +119,8 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
 
 
     @Override
-    public void senderIsDead(Animal animal) {
-        removeFromProperCell(animal);
+    public void senderIsDead(Animal animal, int deathDay) {
+        remove(animal);
     }
 
     @Override

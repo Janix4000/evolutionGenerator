@@ -1,25 +1,32 @@
 package World.AnimalStatistics;
 
 import World.Entities.Animal;
+import World.IBirthObserver;
+import World.IBirthSender;
 import World.IDeathObserver;
 
 import java.util.ArrayList;
 
-public class NChildrenStatistics implements IDeathObserver<Animal> {
+public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal> {
     private int sum = 0;
-    private int nDead = 0;
+    private int nAnimals = 0;
 
     public void addAnimal(Animal animal) {
-        animal.addIsDeadObserver(this);
-    }
-
-    @Override
-    public void senderIsDead(Animal sender) {
-        sum += sender.getNChildren();
-        nDead++;
+        nAnimals++;
     }
 
     public float getAverageNumberOfChildren() {
-        return (float) sum / nDead;
+        return (float) sum / nAnimals;
+    }
+
+    @Override
+    public void hasBeenGivenBirth(Animal parent, Animal child) {
+        sum++;
+    }
+
+    @Override
+    public void senderIsDead(Animal sender, int deathDay) {
+        nAnimals--;
+        sum -= sender.getNChildren();
     }
 }

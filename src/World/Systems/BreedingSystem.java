@@ -2,6 +2,8 @@ package World.Systems;
 
 import Utility.Vector2d;
 import World.Entities.Animal;
+import World.IBirthObserver;
+import World.IBirthSender;
 import World.Map.IWorldMap;
 import World.Map.WorldMapCell;
 
@@ -10,15 +12,15 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class BreedingSystem {
+public class BreedingSystem implements IBirthSender {
     private final IWorldMap map;
 
     public BreedingSystem(IWorldMap map) {
         this.map = map;
     }
 
-    public List<AnimalsFamily> getChildren(Iterator<WorldMapCell> it) {
-        ArrayList<AnimalsFamily> children = new ArrayList<>();
+    public List<Animal> getChildren(Iterator<WorldMapCell> it) {
+        ArrayList<Animal> children = new ArrayList<>();
 
         while(it.hasNext()) {
             var cell = it.next();
@@ -34,7 +36,9 @@ public class BreedingSystem {
             Animal child = new Animal(par0, par1);
             Vector2d pos = generatePositionForChild(par0.getWorldPosition());
             child.setPosition(pos);
-            children.add(new AnimalsFamily(par0, par1, child));
+            children.add(child);
+            notifyObservers(par0, child);
+            notifyObservers(par1, child);
         }
 
         return children;
@@ -61,5 +65,21 @@ public class BreedingSystem {
         return posPositions.get(0);
     }
 
+    private List<IBirthObserver> observers = new ArrayList<>();
 
+    @Override
+    public void addObserver(IBirthObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(IBirthObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers(Animal parent, Animal child) {
+        for(var observer : observers) {
+            observer.hasBeenGivenBirth(parent, child);
+        }
+    }
 }
