@@ -156,4 +156,13 @@ public class World implements IMapStatistics {
         graphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
     }
 
+    @Override
+    public String getText() {
+        int nAnimals = getNAnimals();
+        int nGrasses = getNGrasses();
+        float averageEnergy = getAverageEnergy();
+        return  "There are " + nAnimals + " animals on the map\n" +
+                "There are " + nGrasses + " grasses on the map\n" +
+                "Average energy of animals: " + averageEnergy;
+    }
 }

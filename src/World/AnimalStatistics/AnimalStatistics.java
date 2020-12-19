@@ -2,10 +2,7 @@ package World.AnimalStatistics;
 
 import World.Entities.Animal;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnimalStatistics {
     private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
@@ -22,10 +19,10 @@ public class AnimalStatistics {
 
     AnimalStatistics(IMapStatistics mapStatistics) {
         this.mapStatistics = mapStatistics;
-        for(int i = 0; i < N_HISTORY; ++i) {
-            energies.add(0);
-            nLives.add(0);
-        }
+//        for(int i = 0; i < N_HISTORY; ++i) {
+//            energies.add(0);
+//            nLives.add(0);
+//        }
     }
 
 
@@ -57,6 +54,29 @@ public class AnimalStatistics {
 
     public List<Integer> getNLives() {
         return nLives;
+    }
+
+    public List<IStatistic> getStatistics() {
+        return new ArrayList<>(Arrays.asList(mapStatistics, nLivedDaysStatistics, nChildrenStatistics, animalTargetSystem));
+    }
+
+    public int getNAnimals() {
+        return mapStatistics.getNAnimals();
+    }
+    public int getNGrasses() {
+        return mapStatistics.getNGrasses();
+    }
+    public List<Animal> getBestGenomes() {
+        return bestGenomeStatistics.getAnimalsWithBestGenomes();
+    }
+    public float getAverageEnergy() {
+        return mapStatistics.getAverageEnergy();
+    }
+    public float getAverageLifeSpan() {
+        return nLivedDaysStatistics.getAverageLifeSpan();
+    }
+    public float getAverageNChildren() {
+        return nChildrenStatistics.getAverageNumberOfChildren();
     }
 
 }
