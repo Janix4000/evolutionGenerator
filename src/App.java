@@ -1,5 +1,6 @@
 import Utility.Config.Config;
 import Utility.Config.JsonConfigLoader;
+import Utility.Vector2d;
 import World.World;
 import processing.core.PApplet;
 
@@ -12,12 +13,12 @@ public class App extends PApplet {
     }
 
     public void settings() {
-        size(800, 600);
+        size(1000, 600);
     }
 
     public void setup() {
         Config config = JsonConfigLoader.load("parameters.json", this);
-        world = new World(this, config);
+        world = new World(this, config, new Vector2d(800, 600));
         frameRate(60);
     }
 
@@ -36,7 +37,7 @@ public class App extends PApplet {
 
     private void render() {
         background(0);
-
+        this.smooth();
         var worldGraphic = world.draw();
         image(worldGraphic, 0 ,0);
     }

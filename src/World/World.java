@@ -1,10 +1,11 @@
 package World;
 
 import Utility.Config.IWorldConfig;
-import Utility.Config.IWorldMapConfig;
 import Utility.CoordinateTransformer;
 import Utility.Vector2d;
 import World.AnimalStatistics.IMapStatistics;
+import World.AnimalStatistics.UI.WorldStatisticsUI;
+import World.AnimalStatistics.WorldStatistics;
 import World.Entities.Animal;
 import World.Map.WorldMap;
 import World.Systems.BreedingSystem;
@@ -17,22 +18,32 @@ import java.util.List;
 public class World implements IMapStatistics {
     private final List<Animal> animals = new ArrayList<>();
     private final WorldMap worldMap;
-    private final Vector2d size = new Vector2d(800, 600);
     private final CoordinateTransformer coordinateTransformer;
     private final BreedingSystem breedingSystem;
-    private final PGraphics graphics;
+    private final PGraphics mapGraphics;
+    private final PApplet ps;
     private final Vector2d cellSize;
     private int day = 0;
     private int nGrasses = 0;
     IWorldConfig config;
+    private final WorldStatistics statistics;
+    private final WorldStatisticsUI statisticsUI;
+    static private final int statisticsWidth = 200;
+    private final Vector2d sceneSize;
 
-    public World(PApplet ps, IWorldConfig config) {
+    public World(PApplet ps, IWorldConfig config, Vector2d sceneSize) {
+        this.ps = ps;
         worldMap = new WorldMap(config.getWorldMapConfig());
-        coordinateTransformer = new CoordinateTransformer(worldMap, size);
+        this.sceneSize = sceneSize;
+        Vector2d mapSize = getMapSize();
+        coordinateTransformer = new CoordinateTransformer(worldMap, mapSize);
         breedingSystem = new BreedingSystem(worldMap);
-        graphics = ps.createGraphics(size.x, size.y);
-        cellSize = new Vector2d(size.x / worldMap.getSize().x, size.y / worldMap.getSize().y);
+        mapGraphics = ps.createGraphics(this.sceneSize.x, this.sceneSize.y);
+        cellSize = new Vector2d(mapSize.x / worldMap.getSize().x, mapSize.y / worldMap.getSize().y);
         this.config = config;
+        statistics = new WorldStatistics(this);
+        statisticsUI = new WorldStatisticsUI(statistics);
+
         spawnFirstAnimals(config.getNStartingAnimals());
     }
 
@@ -57,6 +68,7 @@ public class World implements IMapStatistics {
     private void addAnimal(Animal animal) {
         animals.add(animal);
         worldMap.add(animal);
+        statistics.addAnimal(animal);
         animal.setBirthDay(day);
     }
 
@@ -110,14 +122,29 @@ public class World implements IMapStatistics {
     }
 
     public PGraphics draw() {
-        graphics.beginDraw();
+        mapGraphics.beginDraw();
 
-        graphics.background(0, 200, 0);
-        drawJungle(graphics);
-        drawWorldElements(graphics);
+        mapGraphics.background(100);
+        var mapSize = getMapSize();
+        mapGraphics.fill(0, 200, 0);
+        mapGraphics.rect(0, 0, mapSize.x, mapSize.y);
+        drawJungle(mapGraphics);
+        drawWorldElements(mapGraphics);
+        drawUI();
+        mapGraphics.endDraw();
 
-        graphics.endDraw();
-        return graphics;
+
+
+        return mapGraphics;
+    }
+
+    private Vector2d getMapSize() {
+        return sceneSize.subtract(new Vector2d(statisticsWidth, 0));
+    }
+
+    private void drawUI() {
+        Vector2d pos = new Vector2d(getMapSize().x, 0);
+        statisticsUI.draw(mapGraphics, pos);
     }
 
     public float getAverageEnergy() {

@@ -18,8 +18,8 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
         target.addIsDeadObserver(this);
     }
 
-    public boolean hasTarget() {
-        return target != null;
+    public boolean hasNoTarget() {
+        return target == null;
     }
 
     public void removeTarget() {
@@ -32,7 +32,7 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
     }
 
     public void checkFamily(AnimalsFamily family) {
-        if(!hasTarget()) {
+        if(hasNoTarget()) {
             return;
         }
         var par0_id = family.firstParent.getId();
@@ -57,8 +57,8 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
 
     @Override
     public String getText() {
-        if (target == null) {
-            return "";
+        if (hasNoTarget()) {
+            return "There is no target";
         } else {
             String text = target.getGenomeString() + "\n" +
                 "Number of children: " + target.getNChildren() + "\n" +

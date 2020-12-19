@@ -4,7 +4,7 @@ import World.Entities.Animal;
 
 import java.util.*;
 
-public class AnimalStatistics {
+public class WorldStatistics {
     private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
     private final BestGenomeStatistics bestGenomeStatistics = new BestGenomeStatistics();
     private final NChildrenStatistics nChildrenStatistics = new NChildrenStatistics();
@@ -17,7 +17,7 @@ public class AnimalStatistics {
     private final List<Integer> nLives = new ArrayList<>();
     private final Map<String, Integer> genes = new HashMap<>();
 
-    AnimalStatistics(IMapStatistics mapStatistics) {
+    public WorldStatistics(IMapStatistics mapStatistics) {
         this.mapStatistics = mapStatistics;
 //        for(int i = 0; i < N_HISTORY; ++i) {
 //            energies.add(0);

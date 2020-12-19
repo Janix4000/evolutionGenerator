@@ -2,17 +2,18 @@ package Utility.UI;
 
 import Utility.Vector2d;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Widget implements IWidget {
-    private Vector2d position;
-    private Vector2d size;
+    private Vector2d position = new Vector2d(0, 0);
+    private Vector2d size = new Vector2d(0, 0);
     private final List<IWidget> widgets = new ArrayList<>();
 
     @Override
-    public void draw(PApplet ps, Vector2d pos) {
+    public void draw(PGraphics ps, Vector2d pos) {
         Vector2d finalPos = pos.add(getPosition());
         ps.fill(100, 100);
         ps.stroke(0, 0, 100, 100);
@@ -20,11 +21,11 @@ public class Widget implements IWidget {
         drawChildren(ps, pos);
     }
 
-    public void draw(PApplet ps) {
+    public void draw(PGraphics ps) {
         draw(ps, new Vector2d(0, 0));
     }
 
-    private void drawChildren(PApplet ps, Vector2d pos) {
+    private void drawChildren(PGraphics ps, Vector2d pos) {
         widgets.forEach(w -> w.draw(ps, pos.add(getPosition())));
     }
 
