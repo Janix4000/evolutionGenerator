@@ -7,6 +7,8 @@ import World.IDeathObserver;
 
 import java.util.ArrayList;
 
+import static java.lang.StrictMath.round;
+
 public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal>, IStatistic {
     private int sum = 0;
     private int nAnimals = 0;
@@ -32,6 +34,6 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
 
     @Override
     public String getText() {
-        return  "Average number of children: " + getAverageNumberOfChildren();
+        return  "Average number of children: " + (double) Math.round(getAverageNumberOfChildren() * 100) / 100;
     }
 }

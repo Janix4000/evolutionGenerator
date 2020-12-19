@@ -3,6 +3,8 @@ package World.AnimalStatistics;
 import World.Entities.Animal;
 import World.IDeathObserver;
 
+import static java.lang.StrictMath.round;
+
 public class NLivedDaysStatistics implements IDeathObserver<Animal>, IStatistic {
     private int nDead = 0;
     private int sum = 0;
@@ -25,6 +27,6 @@ public class NLivedDaysStatistics implements IDeathObserver<Animal>, IStatistic 
 
     @Override
     public String getText() {
-        return "Average lifespan: " + getAverageLifeSpan();
+        return "Average lifespan: " + round(getAverageLifeSpan());
     }
 }

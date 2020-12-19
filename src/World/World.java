@@ -15,6 +15,8 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.StrictMath.round;
+
 public class World implements IMapStatistics {
     private final List<Animal> animals = new ArrayList<>();
     private final WorldMap worldMap;
@@ -78,7 +80,7 @@ public class World implements IMapStatistics {
             addAnimal(Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
         }
         for (int i = 0; i < n; ++i) {
-            worldMap.addGrassesIfPossible();
+            spawnGrass();
         }
     }
 
@@ -188,6 +190,6 @@ public class World implements IMapStatistics {
         float averageEnergy = getAverageEnergy();
         return  "There are " + nAnimals + " animals on the map\n" +
                 "There are " + nGrasses + " grasses on the map\n" +
-                "Average energy of animals: " + averageEnergy;
+                "Average energy of animals: " + round(averageEnergy);
     }
 }
