@@ -1,6 +1,7 @@
 package World.AnimalStatistics;
 
 import World.Entities.Animal;
+import World.IBirthSender;
 
 import java.util.*;
 
@@ -32,6 +33,10 @@ public class WorldStatistics {
         nLivedDaysStatistics.addAnimal(animal);
     }
 
+    public void addBirthSender(IBirthSender sender) {
+        sender.addObserver(nChildrenStatistics);
+    }
+
     public void update() {
 //        energies.set(idx, (int) mapStatistics.getAverageEnergy());
 //        nLives.set(idx, mapStatistics.getNAnimals());
@@ -57,7 +62,7 @@ public class WorldStatistics {
     }
 
     public List<IStatistic> getStatistics() {
-        return new ArrayList<>(Arrays.asList(mapStatistics, nLivedDaysStatistics, nChildrenStatistics, animalTargetSystem));
+        return new ArrayList<>(Arrays.asList(mapStatistics, bestGenomeStatistics, nLivedDaysStatistics, nChildrenStatistics, animalTargetSystem));
     }
 
     public int getNAnimals() {

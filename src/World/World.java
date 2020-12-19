@@ -42,6 +42,7 @@ public class World implements IMapStatistics {
         cellSize = new Vector2d(mapSize.x / worldMap.getSize().x, mapSize.y / worldMap.getSize().y);
         this.config = config;
         statistics = new WorldStatistics(this);
+        statistics.addBirthSender(breedingSystem);
         statisticsUI = new WorldStatisticsUI(statistics);
 
         spawnFirstAnimals(config.getNStartingAnimals());
@@ -132,9 +133,6 @@ public class World implements IMapStatistics {
         drawWorldElements(mapGraphics);
         drawUI();
         mapGraphics.endDraw();
-
-
-
         return mapGraphics;
     }
 
