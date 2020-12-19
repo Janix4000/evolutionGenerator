@@ -7,11 +7,14 @@ import World.Entities.Grass;
 import World.IDeathObserver;
 import World.IPositionChangeObserver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<WorldMapCell>, IDeathObserver<Animal>, IWorldMap, IRandomPositionGenerator {
     private final HashMap<Vector2d, WorldMapCell> cells = new HashMap<>();
+    private final List<WorldMapCell> animalCells = new ArrayList<>();
     private final Vector2d size;
     private final JungleRegion jungleRegion;
     private final FreePositionsManager freePositionsManager;
@@ -66,6 +69,9 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private void removeFromProperCell(Animal animal, Vector2d position) {
         var cell = cells.get(position);
         cell.remove(animal);
+        if(!cell.hasAnyAnimals()) {
+            animalCells.remove(cell);
+        }
         if(cell.isEmpty()) {
             cells.remove(position);
             freePositionsManager.addFreePosition(position);
@@ -86,12 +92,17 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
     private void putInProperCell(Animal animal) {
         var pos = animal.getWorldPosition();
         if(cells.containsKey(pos)) {
-            cells.get(pos).add(animal);
+            var cell = cells.get(pos);
+            if(!cell.hasAnyAnimals()) {
+                animalCells.add(cell);
+            }
+            cell.add(animal);
         } else {
             var cell =  new WorldMapCell();
             cells.put(pos,cell);
             cell.add(animal);
             freePositionsManager.removeFreePosition(pos);
+            animalCells.add(cell);
         }
     }
     private void putInProperCell(Grass grass) {
@@ -117,6 +128,9 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         return cells.values().iterator();
     }
 
+    public Iterator<WorldMapCell> animalsIterator() {
+        return animalCells.iterator();
+    }
 
     @Override
     public void senderIsDead(Animal animal, int deathDay) {

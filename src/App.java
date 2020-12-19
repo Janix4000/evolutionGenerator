@@ -3,6 +3,7 @@ import processing.core.PApplet;
 
 public class App extends PApplet {
     private World world;
+    private int last_t = 0;
     public static void main(String[] args) {
         PApplet.main("App", args);
     }
@@ -13,12 +14,13 @@ public class App extends PApplet {
 
     public void setup() {
         world = new World(this);
-
+        //frameRate(60);
     }
 
     public void draw() {
         update();
         render();
+        frame.setTitle("FPS: " + round(frameRate));
     }
 
     private void update() {

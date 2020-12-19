@@ -67,16 +67,18 @@ public class World implements IMapStatistics {
     }
 
     private void breedAnimals() {
-        var children = breedingSystem.getChildren(worldMap.iterator());
+        var children = breedingSystem.getChildren(worldMap.animalsIterator());
         for (var child : children) {
             addAnimal(child);
         }
     }
 
     private void feedAnimalsWithGrass() {
-        for(var cell : worldMap) {
+        var it = worldMap.animalsIterator();
+        while(it.hasNext()) {
+            var cell = it.next();
             if(cell.hasAnyAnimals() && cell.hasGrass()) {
-                int grassEnergy = 40;
+                int grassEnergy = 70;
                 var animals = cell.getBestAnimals();
                 final int energy = grassEnergy / animals.size();
                 animals.forEach(a -> a.addEnergy(energy));
