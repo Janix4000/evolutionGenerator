@@ -55,7 +55,7 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic 
         if(bestGenomes.isEmpty()) {
             return "All animals are dead";
         }
-        return "Best genome: " + bestGenomes.get(0).toString() + "\n" +
+        return "Best genome: \n" + bestGenomes.get(0).getGenomeString() + "\n" +
                 "There are " + bestGenomes.size() + " with this genome.";
     }
 }
