@@ -6,10 +6,16 @@ import World.IDeathObserver;
 import java.util.*;
 
 public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic {
-    private final SortedSet<List<Animal>> genes = new TreeSet<>((a, b) -> -(a.size() - b.size()));
+    private final SortedSet<List<Animal>> genes = new TreeSet<>((a, b) -> {
+        if(a.size() == b.size()) {
+            return a.get(0).getGenomeString().compareTo(b.get(0).getGenomeString());
+        }
+        return -(a.size() - b.size());
+    });
 
 
     public void addAnimal(Animal animal) {
+        animal.addIsDeadObserver(this);
         var genome = animal.getGenomeString();
         for(var l : genes) {
             if(l.get(0).getGenomeString().equals(genome)) {
@@ -27,7 +33,7 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic 
 
     public List<Animal> getAnimalsWithBestGenomes() {
         if(genes.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return genes.first();
     }

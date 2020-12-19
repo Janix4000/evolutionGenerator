@@ -15,9 +15,13 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
 
     public void addAnimal(Animal animal) {
         nAnimals++;
+        animal.addIsDeadObserver(this);
     }
 
     public float getAverageNumberOfChildren() {
+        if(nAnimals == 0) {
+            return 0;
+        }
         return (float) sum / nAnimals;
     }
 
