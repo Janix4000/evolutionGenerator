@@ -35,6 +35,7 @@ public class WorldStatistics {
 
     public void addBirthSender(IBirthSender sender) {
         sender.addObserver(nChildrenStatistics);
+        sender.addObserver(animalTargetSystem);
     }
 
     public void update() {

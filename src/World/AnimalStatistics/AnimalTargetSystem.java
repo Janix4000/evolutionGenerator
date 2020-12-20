@@ -1,12 +1,12 @@
 package World.AnimalStatistics;
 
 import World.Entities.Animal;
+import World.IBirthObserver;
 import World.IDeathObserver;
-import World.Systems.AnimalsFamily;
 
 import java.util.HashSet;
 
-public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
+public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserver,IStatistic {
     private Animal target = null;
     private final HashSet<Integer> descendants = new HashSet<>();
     private int deathDay = -1;
@@ -31,14 +31,17 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
         deathDay = -1;
     }
 
-    public void checkFamily(AnimalsFamily family) {
+    public void checkFamily(Animal parent, Animal child) {
         if(hasNoTarget()) {
             return;
         }
-        var par0_id = family.firstParent.getId();
-        var par1_id = family.secondParent.getId();
-        if(descendants.contains(par0_id) || descendants.contains(par1_id)) {
-            descendants.add(family.child.getId());
+        int childId = child.getId();
+        if(descendants.contains(childId)) {
+            return;
+        }
+        var parentId = parent.getId();
+        if(descendants.contains(parentId)) {
+            descendants.add(childId);
         }
     }
 
@@ -64,14 +67,19 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
                 target.getGenomeString() + "\n" +
                 "Number of children: " + target.getNChildren() + "\n" +
                 "Total number of descendants: " + getNDescendants() + "\n" +
-                "Birthday: " + target.getBirthDay() + "\n" +
-                "Energy: " + target.getEnergy();
+                "Birthday: " + target.getBirthDay() + "\n";
             if(target.hasNoEnergy()) {
-                text = text + "\n" +
-                    "Day of death: " + deathDay;
+                text += "Day of death: " + deathDay;
+            } else {
+                text += "Energy: " + target.getEnergy();
             }
             return text;
         }
+    }
+
+    @Override
+    public void hasBeenGivenBirth(Animal parent, Animal child) {
+        checkFamily(parent, child);
     }
 }
 
