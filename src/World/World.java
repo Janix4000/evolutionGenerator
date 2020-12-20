@@ -132,11 +132,43 @@ public class World implements IMapStatistics {
         var mapSize = getMapSize();
         mapGraphics.fill(0, 200, 0);
         mapGraphics.rect(0, 0, mapSize.x, mapSize.y);
-        drawJungle(mapGraphics);
-        drawWorldElements(mapGraphics);
+        drawJungle();
+        drawTargetAnimal();
+        drawWorldElements();
+        drawAnimalsWithBestGenome();
         drawUI();
         mapGraphics.endDraw();
         return mapGraphics;
+    }
+
+    private void drawTargetAnimal() {
+        if(statistics.hasNoTarget()) {
+            return;
+        }
+        Animal target = statistics.getTarget();
+        int c;
+        if(target.hasNoEnergy()) {
+            c = mapGraphics.color(125);
+        } else {
+            c = mapGraphics.color(255, 0, 0);
+        }
+        drawAnimalFrame(target, c);
+    }
+
+    private void drawAnimalsWithBestGenome() {
+        var bestAnimals = statistics.getAnimalsWithBestGenomes();
+        for(var animal : bestAnimals) {
+            drawAnimalFrame(animal, mapGraphics.color(255, 255, 0));
+        }
+    }
+
+    private void drawAnimalFrame(Animal animal, int color) {
+        var pos = coordinateTransformer.toSceneCords(animal.getWorldPosition());
+
+        mapGraphics.stroke(color);
+        mapGraphics.strokeWeight(2);
+        mapGraphics.noFill();
+        mapGraphics.rect(pos.x, pos.y, cellSize.x, cellSize.y);
     }
 
     private Vector2d getMapSize() {
@@ -146,6 +178,15 @@ public class World implements IMapStatistics {
     private void drawUI() {
         Vector2d pos = new Vector2d(getMapSize().x, 0);
         statisticsUI.draw(mapGraphics, pos);
+    }
+
+    private void drawWorldElements() {
+        mapGraphics.smooth();
+        for (var cell : worldMap) {
+            var representative = cell.getRepresentative();
+            var pos = coordinateTransformer.toSceneCords(representative.getWorldPosition());
+            representative.draw(mapGraphics, new Utility.Rectangle(pos, cellSize) );
+        }
     }
 
     public float getAverageEnergy() {
@@ -165,23 +206,14 @@ public class World implements IMapStatistics {
         return animals.size();
     }
 
-    private void drawWorldElements(PGraphics graphics) {
-        graphics.smooth();
-        for (var cell : worldMap) {
-            var representative = cell.getRepresentative();
-            var pos = coordinateTransformer.toSceneCords(representative.getWorldPosition());
-            int rx = cellSize.x;
-            int ry = cellSize.y;
-            representative.draw(graphics, new Utility.Rectangle(pos, new Vector2d(rx, ry)) );
-        }
-    }
 
-    private void drawJungle(PGraphics graphics) {
+
+    private void drawJungle() {
         var box = worldMap.getJungleBox();
         var lt = coordinateTransformer.toSceneCords(box.position);
         var rb = coordinateTransformer.toSceneCords(box.position.add(box.size));
-        graphics.fill(0, 255, 0);
-        graphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
+        mapGraphics.fill(0, 255, 0);
+        mapGraphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
     }
 
     @Override

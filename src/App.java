@@ -75,6 +75,7 @@ public class App extends PApplet {
     public void mouseClicked() {
         super.mouseClicked();
         processMouseEvent();
+
     }
 
     private void processMouseEvent() {

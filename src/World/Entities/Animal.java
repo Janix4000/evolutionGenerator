@@ -33,7 +33,6 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     private int nChildren = 0;
     private int birthDay;
 
-
     public Animal(IWorldMap boundaries) {
         this.boundaries = boundaries;
         genome = new AnimalGenome();

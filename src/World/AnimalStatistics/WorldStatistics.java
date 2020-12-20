@@ -72,7 +72,7 @@ public class WorldStatistics {
     public int getNGrasses() {
         return mapStatistics.getNGrasses();
     }
-    public List<Animal> getBestGenomes() {
+    public List<Animal> getAnimalsWithBestGenomes() {
         return bestGenomeStatistics.getAnimalsWithBestGenomes();
     }
     public float getAverageEnergy() {
@@ -87,5 +87,13 @@ public class WorldStatistics {
 
     public void setTarget(Animal animal) {
         animalTargetSystem.setTarget(animal);
+    }
+
+    public boolean hasNoTarget() {
+        return animalTargetSystem.hasNoTarget();
+    }
+
+    public Animal getTarget() {
+        return animalTargetSystem.getTarget();
     }
 }
