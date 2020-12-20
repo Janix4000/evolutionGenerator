@@ -16,18 +16,19 @@ import static java.lang.Integer.min;
 
 public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Comparable<Animal> {
 
+    private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
+    private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
     private static int NEXT_ID = 0;
-    private int id;
+    private final int id;
+    private final IWorldMap boundaries;
+
     private Vector2d position;
     private MapDirection mapDirection = N;
 
-    private final List<IPositionChangeObserver<Animal>> positionObservers = new ArrayList<>();
-    private final List<IDeathObserver<Animal>> isDeadObservers = new ArrayList<>();
 
     private int maxEnergy = 1;
     private int energy = 1;
 
-    private final IWorldMap boundaries;
     private final AnimalGenome genome;
     private int nChildren = 0;
     private int birthDay;

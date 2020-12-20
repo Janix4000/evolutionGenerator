@@ -181,4 +181,8 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
                 jungleRegion.getUpperRightJunglePos().subtract(jungleRegion.getLowerLeftJunglePos())
         );
     }
+
+    public WorldMapCell getCell(Vector2d worldPos) {
+        return cells.getOrDefault(worldPos, null);
+    }
 }

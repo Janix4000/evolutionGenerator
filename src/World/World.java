@@ -8,6 +8,7 @@ import World.AnimalStatistics.UI.WorldStatisticsUI;
 import World.AnimalStatistics.WorldStatistics;
 import World.Entities.Animal;
 import World.Map.WorldMap;
+import World.Map.WorldMapCell;
 import World.Systems.BreedingSystem;
 import processing.core.PApplet;
 import processing.core.PGraphics;
@@ -168,7 +169,7 @@ public class World implements IMapStatistics {
         graphics.smooth();
         for (var cell : worldMap) {
             var representative = cell.getRepresentative();
-            var pos = coordinateTransformer.toWorldCords(representative.getWorldPosition());
+            var pos = coordinateTransformer.toSceneCords(representative.getWorldPosition());
             int rx = cellSize.x;
             int ry = cellSize.y;
             representative.draw(graphics, new Utility.Rectangle(pos, new Vector2d(rx, ry)) );
@@ -177,8 +178,8 @@ public class World implements IMapStatistics {
 
     private void drawJungle(PGraphics graphics) {
         var box = worldMap.getJungleBox();
-        var lt = coordinateTransformer.toWorldCords(box.position);
-        var rb = coordinateTransformer.toWorldCords(box.position.add(box.size));
+        var lt = coordinateTransformer.toSceneCords(box.position);
+        var rb = coordinateTransformer.toSceneCords(box.position.add(box.size));
         graphics.fill(0, 255, 0);
         graphics.rect(lt.x, lt.y, rb.x - lt.x, rb.y - lt.y);
     }
@@ -191,5 +192,14 @@ public class World implements IMapStatistics {
         return  "There are " + nAnimals + " animals on the map\n" +
                 "There are " + nGrasses + " grasses on the map\n" +
                 "Average energy of animals: " + round(averageEnergy);
+    }
+
+    public void processMouseEvent(Vector2d mousePos) {
+        var worldPos = coordinateTransformer.toWorldCords(mousePos);
+        WorldMapCell cell = worldMap.getCell(worldPos);
+        if(cell != null && cell.hasAnyAnimals()) {
+            var animal = cell.getTopAnimals(1).get(0);
+            statistics.setTarget(animal);
+        }
     }
 }

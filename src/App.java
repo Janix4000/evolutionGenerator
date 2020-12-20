@@ -70,4 +70,16 @@ public class App extends PApplet {
             }
         }
     }
+
+    @Override
+    public void mouseClicked() {
+        super.mouseClicked();
+        processMouseEvent();
+    }
+
+    private void processMouseEvent() {
+        if(state == AppState.Stopped) {
+            world.processMouseEvent(new Vector2d(mouseX, mouseY).subtract(new Vector2d(0, 0)));
+        }
+    }
 }

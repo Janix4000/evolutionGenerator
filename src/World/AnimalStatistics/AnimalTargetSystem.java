@@ -58,12 +58,14 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IStatistic{
     @Override
     public String getText() {
         if (hasNoTarget()) {
-            return "There is no target";
+            return "\nThere is no target";
         } else {
-            String text = target.getGenomeString() + "\n" +
+            String text = "\nTarget: \n" +
+                target.getGenomeString() + "\n" +
                 "Number of children: " + target.getNChildren() + "\n" +
                 "Total number of descendants: " + getNDescendants() + "\n" +
-                "Birthday: " + target.getBirthDay();
+                "Birthday: " + target.getBirthDay() + "\n" +
+                "Energy: " + target.getEnergy();
             if(target.hasNoEnergy()) {
                 text = text + "\n" +
                     "Day of death: " + deathDay;

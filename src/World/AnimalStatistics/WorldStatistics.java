@@ -84,4 +84,7 @@ public class WorldStatistics {
         return nChildrenStatistics.getAverageNumberOfChildren();
     }
 
+    public void setTarget(Animal animal) {
+        animalTargetSystem.setTarget(animal);
+    }
 }
