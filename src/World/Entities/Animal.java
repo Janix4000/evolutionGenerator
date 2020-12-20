@@ -205,4 +205,8 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     public Integer getId() {
         return id;
     }
+
+    public boolean isEqual(Animal rhs) {
+        return getId().equals(rhs.getId());
+    }
 }

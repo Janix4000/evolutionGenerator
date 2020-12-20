@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserver,IStatistic {
     private Animal target = null;
     private final HashSet<Integer> descendants = new HashSet<>();
+    private int nChildren = 0;
     private int deathDay = -1;
 
     public void setTarget(Animal animal) {
@@ -29,6 +30,7 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserve
         target = null;
         descendants.clear();
         deathDay = -1;
+        nChildren = 0;
     }
 
     public void checkFamily(Animal parent, Animal child) {
@@ -42,6 +44,9 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserve
         var parentId = parent.getId();
         if(descendants.contains(parentId)) {
             descendants.add(childId);
+        }
+        if(parent.isEqual(target)) {
+            nChildren++;
         }
     }
 
@@ -65,7 +70,7 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserve
         } else {
             String text = "\nTarget: \n" +
                 target.getGenomeString() + "\n" +
-                "Number of children: " + target.getNChildren() + "\n" +
+                "Number of children: " + nChildren + "\n" +
                 "Total number of descendants: " + getNDescendants() + "\n" +
                 "Birthday: " + target.getBirthDay() + "\n";
             if(target.hasNoEnergy()) {
