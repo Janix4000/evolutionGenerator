@@ -81,6 +81,17 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, ITextStatis
         }
     }
 
+    @Override
+    public HashMap<String, String> getAverageResults() {
+        HashMap<String, String> res = new HashMap<>();
+        if(bestGenomes.isEmpty()) {
+            res.put("BestGenome", "None");
+        } else {
+            res.put("BestGenome", getBestGenomeString());
+        }
+        return res;
+    }
+
     public String getBestGenomeString() {
         int nBest = 0;
         String bestG = "";

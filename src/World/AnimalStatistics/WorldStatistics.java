@@ -4,6 +4,7 @@ import World.Entities.Animal;
 import World.IBirthSender;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WorldStatistics implements IAccumulateStatistics {
     private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
@@ -15,15 +16,11 @@ public class WorldStatistics implements IAccumulateStatistics {
 
     static private final int N_HISTORY = 200;
     private final List<Integer> energies = new ArrayList<>();
+    private final List<Integer> nGrasses = new ArrayList<>();
     private final List<Integer> nLives = new ArrayList<>();
-    private final Map<String, Integer> genes = new HashMap<>();
 
     public WorldStatistics(IMapStatistics mapStatistics) {
         this.mapStatistics = mapStatistics;
-//        for(int i = 0; i < N_HISTORY; ++i) {
-//            energies.add(0);
-//            nLives.add(0);
-//        }
     }
 
 
@@ -95,12 +92,29 @@ public class WorldStatistics implements IAccumulateStatistics {
     public void updateAccumulation() {
         energies.add((int) mapStatistics.getAverageEnergy());
         nLives.add(mapStatistics.getNAnimals());
-        var bestGene = bestGenomeStatistics.getAnimalsWithBestGenomes().get(0).getGenomeString();
-        if(genes.containsKey(bestGene)) {
-            var n = genes.remove(bestGene);
-            genes.put(bestGene, n + 1);
-        } else {
-            genes.put(bestGene, 1);
-        }
+        nGrasses.add(mapStatistics.getNGrasses());
     }
+
+    private float getAverageAverageNumberOf(List<Integer> list) {
+        if (list.isEmpty()) {
+            return 0;
+        }
+        return (float) list.stream().reduce(Integer::sum).get() / list.size();
+    }
+
+    @Override
+    public HashMap<String, String> getAverageResults() {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("AverageNumberOfLivingAnimals", String.valueOf(getAverageAverageNumberOf(nLives)));
+        res.put("AverageNumberOfGrasses", String.valueOf(getAverageAverageNumberOf(nGrasses)));
+        res.put("AverageEnergy", String.valueOf(getAverageAverageNumberOf(energies)));
+        return res;
+    }
+
+    public HashMap<String, String> getMapOfResults() {
+        var statistics = getAccumulateStatistics();
+        return statistics.stream().map(IAccumulateStatistics::getAverageResults).
+                reduce(new HashMap<>(), (a, b) -> { a.putAll(b); return a; });
+    }
+
 }

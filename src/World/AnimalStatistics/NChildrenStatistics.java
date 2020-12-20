@@ -4,6 +4,8 @@ import World.Entities.Animal;
 import World.IBirthObserver;
 import World.IDeathObserver;
 
+import java.util.HashMap;
+
 import static java.lang.StrictMath.round;
 
 public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal>, ITextStatistic, IAccumulateStatistics {
@@ -52,5 +54,12 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
     public void updateAccumulation() {
         sumOfAverages += getAverageNumberOfChildren();
         nDays++;
+    }
+
+    @Override
+    public HashMap<String, String> getAverageResults() {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("AverageNumberOfChildren", String.valueOf(getAverageAverageNumberOfChildren()));
+        return res;
     }
 }
