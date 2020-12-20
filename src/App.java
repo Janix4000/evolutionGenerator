@@ -1,9 +1,12 @@
 import Utility.Config.Config;
 import Utility.Config.JsonConfigLoader;
 import Utility.Vector2d;
+import World.AnimalStatistics.JsonAverageStatisticsSaver;
 import World.World;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
+
+import java.io.IOException;
 
 public class App extends PApplet {
     private World world;
@@ -70,7 +73,14 @@ public class App extends PApplet {
             }
         } else {
             if(event.getKey() == 'a') {
-                world.printAverageStatistics();
+                final String fileName =  "statistics.json";
+                try {
+                    world.saveStatistics(fileName);
+                    System.out.println("Saved statistics to " + fileName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.out.println("Couldn't saved statistics to " + fileName);
+                }
             }
         }
     }

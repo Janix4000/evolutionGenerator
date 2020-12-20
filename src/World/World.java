@@ -4,6 +4,7 @@ import Utility.Config.IWorldConfig;
 import Utility.CoordinateTransformer;
 import Utility.Vector2d;
 import World.AnimalStatistics.IMapStatistics;
+import World.AnimalStatistics.JsonAverageStatisticsSaver;
 import World.AnimalStatistics.UI.WorldStatisticsUI;
 import World.AnimalStatistics.WorldStatistics;
 import World.Entities.Animal;
@@ -13,6 +14,7 @@ import World.Systems.BreedingSystem;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -238,4 +240,7 @@ public class World implements IMapStatistics {
         results.forEach((key, value) -> System.out.println(key + " " + value));
     }
 
+    public void saveStatistics(String fileName) throws IOException {
+        JsonAverageStatisticsSaver.save(statistics, fileName);
+    }
 }
