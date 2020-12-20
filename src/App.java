@@ -24,7 +24,15 @@ public class App extends PApplet {
     }
 
     public void setup() {
-        Config config = JsonConfigLoader.load("parameters.json", this);
+
+        Config config;
+        try {
+            config = JsonConfigLoader.load("parameters.json", this);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            super.exit();
+            return;
+        }
         world = new World(this, config, new Vector2d(800, 600));
         frameRate(60);
     }
