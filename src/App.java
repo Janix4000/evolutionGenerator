@@ -3,10 +3,14 @@ import Utility.Config.JsonConfigLoader;
 import Utility.Vector2d;
 import World.World;
 import processing.core.PApplet;
+import processing.event.KeyEvent;
 
 public class App extends PApplet {
     private World world;
     private int last_t = 0;
+    private AppState state = AppState.Running;
+    private float tickCooldown = 0;
+    private float tickDf = (float) (1.0 / 60);
 
     public static void main(String[] args) {
         PApplet.main("App", args);
@@ -29,9 +33,10 @@ public class App extends PApplet {
     }
 
     private void update() {
-        if(keyPressed) {
+        tickCooldown -= 1 / frameRate;
+        while(tickCooldown <= 0) {
             world.makeTick();
-            System.out.println(key);
+            tickCooldown += tickDf;
         }
     }
 
@@ -40,5 +45,11 @@ public class App extends PApplet {
         this.smooth();
         var worldGraphic = world.draw();
         image(worldGraphic, 0 ,0);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        super.keyReleased(event);
+        System.out.println(event.getKey());
     }
 }
