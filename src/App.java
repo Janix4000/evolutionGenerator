@@ -68,6 +68,10 @@ public class App extends PApplet {
             } else if (event.getKeyCode() == rightKeyCode) {
                 nTicksPerSecond = min(60, nTicksPerSecond + 1);
             }
+        } else {
+            if(event.getKey() == 'a') {
+                world.printAverageStatistics();
+            }
         }
     }
 

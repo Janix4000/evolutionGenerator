@@ -4,6 +4,6 @@
   "nStartingAnimals": 20,
   "startEnergy": 100,
   "moveEnergy": 1,
-  "plantEnergy": 5,
+  "plantEnergy": 20,
   "jungleRatio": 0.4
 }

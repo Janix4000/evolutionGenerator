@@ -57,6 +57,8 @@ public class World implements IMapStatistics {
         breedAnimals();
         spawnGrass();
 
+        statistics.update();
+
         day++;
     }
 
@@ -230,4 +232,10 @@ public class World implements IMapStatistics {
             statistics.setTarget(animal);
         }
     }
+
+    public void printAverageStatistics() {
+        var results = statistics.getMapOfResults();
+        results.forEach((key, value) -> System.out.println(key + " " + value));
+    }
+
 }

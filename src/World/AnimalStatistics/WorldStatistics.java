@@ -6,6 +6,8 @@ import World.IBirthSender;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.lang.StrictMath.round;
+
 public class WorldStatistics implements IAccumulateStatistics {
     private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
     private final BestGenomeStatistics bestGenomeStatistics = new BestGenomeStatistics();
@@ -105,9 +107,9 @@ public class WorldStatistics implements IAccumulateStatistics {
     @Override
     public HashMap<String, String> getAverageResults() {
         HashMap<String, String> res = new HashMap<>();
-        res.put("AverageNumberOfLivingAnimals", String.valueOf(getAverageAverageNumberOf(nLives)));
-        res.put("AverageNumberOfGrasses", String.valueOf(getAverageAverageNumberOf(nGrasses)));
-        res.put("AverageEnergy", String.valueOf(getAverageAverageNumberOf(energies)));
+        res.put("AverageNumberOfLivingAnimals", String.valueOf(round(getAverageAverageNumberOf(nLives))));
+        res.put("AverageNumberOfGrasses", String.valueOf(round(getAverageAverageNumberOf(nGrasses))));
+        res.put("AverageEnergy", String.valueOf(round(getAverageAverageNumberOf(energies))));
         return res;
     }
 

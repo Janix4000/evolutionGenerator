@@ -3,6 +3,8 @@ package World.AnimalStatistics;
 import World.Entities.Animal;
 import World.IDeathObserver;
 
+import java.util.HashMap;
+
 import static java.lang.StrictMath.round;
 
 public class NLivedDaysStatistics implements IDeathObserver<Animal>, ITextStatistic, IAccumulateStatistics {
@@ -43,5 +45,12 @@ public class NLivedDaysStatistics implements IDeathObserver<Animal>, ITextStatis
     public void updateAccumulation() {
         sumOfSums += sum;
         nDays++;
+    }
+
+    @Override
+    public HashMap<String, String> getAverageResults() {
+        HashMap<String, String> res = new HashMap<>();
+        res.put("AverageLifeSpan", String.valueOf(round(getAverageLifeSpanOfPopulation())));
+        return res;
     }
 }

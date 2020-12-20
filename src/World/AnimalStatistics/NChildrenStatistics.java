@@ -59,7 +59,8 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
     @Override
     public HashMap<String, String> getAverageResults() {
         HashMap<String, String> res = new HashMap<>();
-        res.put("AverageNumberOfChildren", String.valueOf(getAverageAverageNumberOfChildren()));
+        float rounded = (float) Math.round(getAverageAverageNumberOfChildren() * 100) / 100;
+        res.put("AverageNumberOfChildren", String.valueOf(rounded));
         return res;
     }
 }
