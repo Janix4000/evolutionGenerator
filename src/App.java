@@ -1,7 +1,6 @@
 import Utility.Config.Config;
 import Utility.Config.JsonConfigLoader;
 import Utility.Vector2d;
-import World.AnimalStatistics.JsonAverageStatisticsSaver;
 import World.World;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -10,7 +9,6 @@ import java.io.IOException;
 
 public class App extends PApplet {
     private World world;
-    private int last_t = 0;
     private AppState state = AppState.Running;
     private float tickCooldown = 0;
     private int nTicksPerSecond = 20;

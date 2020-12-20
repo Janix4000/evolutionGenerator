@@ -15,7 +15,6 @@ public class WorldStatistics implements IAccumulateStatistics {
 
     private final IMapStatistics mapStatistics;
 
-    static private final int N_HISTORY = 200;
     private final List<Integer> energies = new ArrayList<>();
     private final List<Integer> nGrasses = new ArrayList<>();
     private final List<Integer> nLives = new ArrayList<>();
@@ -46,10 +45,6 @@ public class WorldStatistics implements IAccumulateStatistics {
         return energies;
     }
 
-    public List<Integer> getNLives() {
-        return nLives;
-    }
-
     public List<ITextStatistic> getTextStatistics() {
         return new ArrayList<>(Arrays.asList(mapStatistics, bestGenomeStatistics, nLivedDaysStatistics, nChildrenStatistics, animalTargetSystem));
     }
@@ -58,23 +53,8 @@ public class WorldStatistics implements IAccumulateStatistics {
         return new ArrayList<>(Arrays.asList(bestGenomeStatistics, nLivedDaysStatistics, nChildrenStatistics, this));
     }
 
-    public int getNAnimals() {
-        return mapStatistics.getNAnimals();
-    }
-    public int getNGrasses() {
-        return mapStatistics.getNGrasses();
-    }
     public List<Animal> getAnimalsWithBestGenomes() {
         return bestGenomeStatistics.getAnimalsWithBestGenomes();
-    }
-    public float getAverageEnergy() {
-        return mapStatistics.getAverageEnergy();
-    }
-    public float getAverageLifeSpan() {
-        return nLivedDaysStatistics.getAverageLifeSpan();
-    }
-    public float getAverageNChildren() {
-        return nChildrenStatistics.getAverageNumberOfChildren();
     }
 
     public void setTarget(Animal animal) {
