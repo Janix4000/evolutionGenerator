@@ -24,7 +24,6 @@ public class World implements IMapStatistics {
     private final CoordinateTransformer coordinateTransformer;
     private final BreedingSystem breedingSystem;
     private final PGraphics mapGraphics;
-    private final PApplet ps;
     private final Vector2d cellSize;
     private int day = 0;
     private int nGrasses = 0;
@@ -35,7 +34,6 @@ public class World implements IMapStatistics {
     private final Vector2d sceneSize;
 
     public World(PApplet ps, IWorldConfig config, Vector2d sceneSize) {
-        this.ps = ps;
         worldMap = new WorldMap(config.getWorldMapConfig());
         this.sceneSize = sceneSize;
         Vector2d mapSize = getMapSize();
