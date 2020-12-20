@@ -4,12 +4,11 @@ import World.Entities.Animal;
 import World.IBirthSender;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.StrictMath.round;
 
 public class WorldStatistics implements IAccumulateStatistics {
-    private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
+    private final AnimalTargetStatistics animalTargetSystem =  new AnimalTargetStatistics();
     private final BestGenomeStatistics bestGenomeStatistics = new BestGenomeStatistics();
     private final NChildrenStatistics nChildrenStatistics = new NChildrenStatistics();
     private final NLivedDaysStatistics nLivedDaysStatistics = new NLivedDaysStatistics();
