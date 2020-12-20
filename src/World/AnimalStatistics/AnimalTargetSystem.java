@@ -74,7 +74,8 @@ public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserve
                 "Total number of descendants: " + getNDescendants() + "\n" +
                 "Birthday: " + target.getBirthDay() + "\n";
             if(target.hasNoEnergy()) {
-                text += "Day of death: " + deathDay;
+                text += "Day of death: " + deathDay + "\n" +
+                        "Lived " + (deathDay - target.getBirthDay()) + " days";
             } else {
                 text += "Energy: " + target.getEnergy();
             }
