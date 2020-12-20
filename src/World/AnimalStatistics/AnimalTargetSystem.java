@@ -6,7 +6,7 @@ import World.IDeathObserver;
 
 import java.util.HashSet;
 
-public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserver,IStatistic {
+public class AnimalTargetSystem implements IDeathObserver<Animal>, IBirthObserver, ITextStatistic {
     private Animal target = null;
     private final HashSet<Integer> descendants = new HashSet<>();
     private int nChildren = 0;

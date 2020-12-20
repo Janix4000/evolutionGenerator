@@ -5,13 +5,14 @@ import World.IDeathObserver;
 
 import java.util.*;
 
-public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic {
+public class BestGenomeStatistics implements IDeathObserver<Animal>, ITextStatistic, IAccumulateStatistics {
     private final SortedSet<List<Animal>> genes = new TreeSet<>((a, b) -> {
         if(a.size() == b.size()) {
             return a.get(0).getGenomeString().compareTo(b.get(0).getGenomeString());
         }
         return -(a.size() - b.size());
     });
+    private final HashMap<String, Integer> bestGenomes = new HashMap<>();
 
 
     public void addAnimal(Animal animal) {
@@ -63,5 +64,33 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, IStatistic 
         }
         return "Best genome: \n" + bestGenomes.get(0).getGenomeString() + "\n" +
                 "There are " + bestGenomes.size() + " with this genome.";
+    }
+
+    @Override
+    public void updateAccumulation() {
+        var bestAnimals = getAnimalsWithBestGenomes();
+        if(bestAnimals.isEmpty()) {
+            return;
+        }
+        var bestGenome = bestAnimals.get(0).getGenomeString();
+        if(bestGenomes.containsKey(bestGenome)) {
+            var n = bestGenomes.get(bestGenome);
+            bestGenomes.replace(bestGenome, n + 1);
+        } else {
+            bestGenomes.put(bestGenome, 1);
+        }
+    }
+
+    public String getBestGenomeString() {
+        int nBest = 0;
+        String bestG = "";
+        for(var entry : bestGenomes.entrySet()) {
+            int n = entry.getValue();
+            if(n > nBest) {
+                bestG = entry.getKey();
+                nBest = n;
+            }
+        }
+        return bestG;
     }
 }

@@ -5,7 +5,7 @@ import World.IBirthSender;
 
 import java.util.*;
 
-public class WorldStatistics {
+public class WorldStatistics implements IAccumulateStatistics {
     private final AnimalTargetSystem animalTargetSystem =  new AnimalTargetSystem();
     private final BestGenomeStatistics bestGenomeStatistics = new BestGenomeStatistics();
     private final NChildrenStatistics nChildrenStatistics = new NChildrenStatistics();
@@ -39,18 +39,8 @@ public class WorldStatistics {
     }
 
     public void update() {
-//        energies.set(idx, (int) mapStatistics.getAverageEnergy());
-//        nLives.set(idx, mapStatistics.getNAnimals());
-//        idx = (idx + 1) % N_HISTORY;
-
-        energies.add((int) mapStatistics.getAverageEnergy());
-        nLives.add(mapStatistics.getNAnimals());
-        var bestGene = bestGenomeStatistics.getAnimalsWithBestGenomes().get(0).getGenomeString();
-        if(genes.containsKey(bestGene)) {
-            var n = genes.remove(bestGene);
-            genes.put(bestGene, n + 1);
-        } else {
-            genes.put(bestGene, 1);
+        for(var statistic : getAccumulateStatistics()) {
+            statistic.updateAccumulation();
         }
     }
 
@@ -62,8 +52,12 @@ public class WorldStatistics {
         return nLives;
     }
 
-    public List<IStatistic> getStatistics() {
+    public List<ITextStatistic> getTextStatistics() {
         return new ArrayList<>(Arrays.asList(mapStatistics, bestGenomeStatistics, nLivedDaysStatistics, nChildrenStatistics, animalTargetSystem));
+    }
+
+    public List<IAccumulateStatistics> getAccumulateStatistics() {
+        return new ArrayList<>(Arrays.asList(bestGenomeStatistics, nLivedDaysStatistics, nChildrenStatistics, this));
     }
 
     public int getNAnimals() {
@@ -95,5 +89,18 @@ public class WorldStatistics {
 
     public Animal getTarget() {
         return animalTargetSystem.getTarget();
+    }
+
+    @Override
+    public void updateAccumulation() {
+        energies.add((int) mapStatistics.getAverageEnergy());
+        nLives.add(mapStatistics.getNAnimals());
+        var bestGene = bestGenomeStatistics.getAnimalsWithBestGenomes().get(0).getGenomeString();
+        if(genes.containsKey(bestGene)) {
+            var n = genes.remove(bestGene);
+            genes.put(bestGene, n + 1);
+        } else {
+            genes.put(bestGene, 1);
+        }
     }
 }

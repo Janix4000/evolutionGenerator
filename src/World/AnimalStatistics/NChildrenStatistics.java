@@ -2,16 +2,16 @@ package World.AnimalStatistics;
 
 import World.Entities.Animal;
 import World.IBirthObserver;
-import World.IBirthSender;
 import World.IDeathObserver;
-
-import java.util.ArrayList;
 
 import static java.lang.StrictMath.round;
 
-public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal>, IStatistic {
+public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Animal>, ITextStatistic, IAccumulateStatistics {
     private int sum = 0;
     private int nAnimals = 0;
+
+    private float sumOfAverages = 0;
+    private int nDays = 0;
 
     public void addAnimal(Animal animal) {
         nAnimals++;
@@ -39,5 +39,18 @@ public class NChildrenStatistics implements IBirthObserver, IDeathObserver<Anima
     @Override
     public String getText() {
         return  "Average number of children: " + (double) Math.round(getAverageNumberOfChildren() * 100) / 100;
+    }
+
+    float getAverageAverageNumberOfChildren() {
+        if(nDays == 0) {
+            return 0;
+        }
+        return sumOfAverages / nDays;
+    }
+
+    @Override
+    public void updateAccumulation() {
+        sumOfAverages += getAverageNumberOfChildren();
+        nDays++;
     }
 }

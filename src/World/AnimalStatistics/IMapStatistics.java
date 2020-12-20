@@ -1,6 +1,6 @@
 package World.AnimalStatistics;
 
-public interface IMapStatistics extends IStatistic{
+public interface IMapStatistics extends ITextStatistic {
     float getAverageEnergy();
     int getNGrasses();
     int getNAnimals();

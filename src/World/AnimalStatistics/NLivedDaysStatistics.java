@@ -5,9 +5,11 @@ import World.IDeathObserver;
 
 import static java.lang.StrictMath.round;
 
-public class NLivedDaysStatistics implements IDeathObserver<Animal>, IStatistic {
+public class NLivedDaysStatistics implements IDeathObserver<Animal>, ITextStatistic, IAccumulateStatistics {
     private int nDead = 0;
     private int sum = 0;
+    private int sumOfSums = 0;
+    private int nDays = 0;
     void addAnimal(Animal animal) {
         animal.addIsDeadObserver(this);
     }
@@ -19,6 +21,13 @@ public class NLivedDaysStatistics implements IDeathObserver<Animal>, IStatistic 
         return (float) sum / nDead;
     }
 
+    public float getAverageLifeSpanOfPopulation() {
+        if(nDays == 0) {
+            return 0;
+        }
+        return (float) sumOfSums / nDays;
+    }
+
     @Override
     public void senderIsDead(Animal sender, int deathDay) {
         sum += deathDay - sender.getBirthDay();
@@ -28,5 +37,11 @@ public class NLivedDaysStatistics implements IDeathObserver<Animal>, IStatistic 
     @Override
     public String getText() {
         return "Average lifespan: " + round(getAverageLifeSpan());
+    }
+
+    @Override
+    public void updateAccumulation() {
+        sumOfSums += sum;
+        nDays++;
     }
 }

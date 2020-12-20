@@ -3,7 +3,6 @@ package World.AnimalStatistics.UI;
 import Utility.UI.Widget;
 import Utility.Vector2d;
 import World.AnimalStatistics.WorldStatistics;
-import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class WorldStatisticsUI extends Widget {
@@ -20,7 +19,7 @@ public class WorldStatisticsUI extends Widget {
         Vector2d finalPos = pos.add(getPosition());
         ps.fill(255);
         ps.textSize(10);
-        String text = statistics.getStatistics().stream().reduce("", (t, s) -> t + "\n" + s.getText(), (i, t) -> i + t);
+        String text = statistics.getTextStatistics().stream().reduce("", (t, s) -> t + "\n" + s.getText(), (i, t) -> i + t);
         ps.text(text, finalPos.x, finalPos.y);
     }
 

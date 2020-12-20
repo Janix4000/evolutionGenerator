@@ -1,5 +1,5 @@
 package World.AnimalStatistics;
 
-public interface IStatistic {
+public interface ITextStatistic {
     String getText();
 }

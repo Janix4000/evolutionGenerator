@@ -204,8 +204,6 @@ public class World implements IMapStatistics {
         return animals.size();
     }
 
-
-
     private void drawJungle() {
         var box = worldMap.getJungleBox();
         var lt = coordinateTransformer.toSceneCords(box.position);
