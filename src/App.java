@@ -10,7 +10,7 @@ public class App extends PApplet {
     private int last_t = 0;
     private AppState state = AppState.Running;
     private float tickCooldown = 0;
-    private float tickDf = (float) (1.0 / 60);
+    private int nTicksPerSecond = 20;
 
     public static void main(String[] args) {
         PApplet.main("App", args);
@@ -33,11 +33,18 @@ public class App extends PApplet {
     }
 
     private void update() {
+        if(state == AppState.Stopped) {
+            return;
+        }
         tickCooldown -= 1 / frameRate;
         while(tickCooldown <= 0) {
             world.makeTick();
-            tickCooldown += tickDf;
+            tickCooldown += getTickDf();
         }
+    }
+
+    private float getTickDf() {
+        return (float) 1 / nTicksPerSecond;
     }
 
     private void render() {
@@ -49,7 +56,18 @@ public class App extends PApplet {
 
     @Override
     public void keyReleased(KeyEvent event) {
+        final int leftKeyCode = 37;
+        final int rightKeyCode = 39;
         super.keyReleased(event);
-        System.out.println(event.getKey());
+        if (event.getKey() == ' ') {
+            state = state.flip();
+        }
+        if(state == AppState.Running) {
+            if (event.getKeyCode() == leftKeyCode) {
+                nTicksPerSecond = max(1, nTicksPerSecond - 1);
+            } else if (event.getKeyCode() == rightKeyCode) {
+                nTicksPerSecond = min(60, nTicksPerSecond + 1);
+            }
+        }
     }
 }
