@@ -1,17 +1,15 @@
 import Utility.Config.Config;
 import Utility.Config.JsonConfigLoader;
 import Utility.Vector2d;
-import World.World;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class App extends PApplet {
-    private World world;
-    private AppState state = AppState.Running;
-    private float tickCooldown = 0;
-    private int nTicksPerSecond = 20;
+    private final List<Simulation> simulations = new ArrayList<>();
 
     public static void main(String[] args) {
         PApplet.main("App", args);
@@ -31,8 +29,8 @@ public class App extends PApplet {
             super.exit();
             return;
         }
-        world = new World(this, config, new Vector2d(800, 600));
         frameRate(60);
+        simulations.add(new Simulation(new Vector2d(0, 0), config, this));
     }
 
     public void draw() {
@@ -42,65 +40,49 @@ public class App extends PApplet {
     }
 
     private void update() {
-        if(state == AppState.Stopped) {
-            return;
-        }
-        tickCooldown -= 1 / frameRate;
-        while(tickCooldown <= 0) {
-            world.makeTick();
-            tickCooldown += getTickDf();
-        }
+        final float dt = (float) 1 / frameRate;
+        simulations.forEach(s -> s.update(dt));
     }
 
-    private float getTickDf() {
-        return (float) 1 / nTicksPerSecond;
-    }
 
     private void render() {
         background(0);
         this.smooth();
-        var worldGraphic = world.draw();
-        image(worldGraphic, 0 ,0);
+        simulations.forEach(s -> s.draw(this));
     }
 
     @Override
     public void keyReleased(KeyEvent event) {
-        final int leftKeyCode = 37;
-        final int rightKeyCode = 39;
         super.keyReleased(event);
-        if (event.getKey() == ' ') {
-            state = state.flip();
+
+        simulations.forEach(s -> s.keyReleased(event));
+
+        if(event.getKey() == 'a') {
+            saveStatistics();
         }
-        if(state == AppState.Running) {
-            if (event.getKeyCode() == leftKeyCode) {
-                nTicksPerSecond = max(1, nTicksPerSecond - 1);
-            } else if (event.getKeyCode() == rightKeyCode) {
-                nTicksPerSecond = min(60, nTicksPerSecond + 1);
-            }
-        } else {
-            if(event.getKey() == 'a') {
-                final String fileName =  "statistics.json";
-                try {
-                    world.saveStatistics(fileName);
-                    System.out.println("Saved statistics to " + fileName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    System.out.println("Couldn't saved statistics to " + fileName);
-                }
+
+
+    }
+
+    private void saveStatistics() {
+        for(int i = 0; i < simulations.size(); ++i) {
+            var simulation = simulations.get(i);
+            final String fileName =  "statistics" + i + ".json";
+            try {
+                simulation.saveStatistics(fileName);
+                System.out.println("Saved statistics to " + fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Couldn't saved statistics to " + fileName);
             }
         }
     }
+
 
     @Override
     public void mouseClicked() {
         super.mouseClicked();
-        processMouseEvent();
-
-    }
-
-    private void processMouseEvent() {
-        if(state == AppState.Stopped) {
-            world.processMouseEvent(new Vector2d(mouseX, mouseY).subtract(new Vector2d(0, 0)));
-        }
+        Vector2d mousePos = new Vector2d(mouseX, mouseY);
+        simulations.forEach(s -> s.mouseClicked(mousePos));
     }
 }
