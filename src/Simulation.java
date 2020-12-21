@@ -1,4 +1,5 @@
 import Utility.Config.Config;
+import Utility.Rectangle2d;
 import Utility.Vector2d;
 import World.World;
 import processing.core.PApplet;
@@ -10,15 +11,15 @@ import static java.lang.Integer.max;
 import static java.lang.Integer.min;
 
 public class Simulation {
-    private final Vector2d screenPosition;
+    private final Rectangle2d screenBox;
     private final World world;
     private float tickCooldown = 0;
     private int nTicksPerSecond = 20;
     private AppState state = AppState.Running;
 
 
-    public Simulation(Vector2d screenPosition, Config config, PApplet ps) {
-        this.screenPosition = screenPosition;
+    public Simulation(Rectangle2d screenBox, Config config, PApplet ps) {
+        this.screenBox = screenBox;
         world = new World(ps, config, new Vector2d(800, 600));
     }
 
@@ -35,7 +36,7 @@ public class Simulation {
 
     public void draw(PApplet ps) {
         var worldGraphic = world.draw();
-        ps.image(worldGraphic, 0 ,0);
+        ps.image(worldGraphic, screenBox.position.x ,screenBox.position.y);
     }
 
     void keyReleased(KeyEvent event) {
@@ -63,7 +64,7 @@ public class Simulation {
 
     public void mouseClicked(Vector2d mousePos) {
         if(state == AppState.Stopped) {
-            world.processMouseEvent(mousePos.subtract(screenPosition));
+            world.processMouseEvent(mousePos.subtract(screenBox.position));
         }
     }
 }

@@ -1,5 +1,6 @@
 import Utility.Config.Config;
 import Utility.Config.JsonConfigLoader;
+import Utility.Rectangle2d;
 import Utility.Vector2d;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -30,7 +31,7 @@ public class App extends PApplet {
             return;
         }
         frameRate(60);
-        simulations.add(new Simulation(new Vector2d(0, 0), config, this));
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(100 ,0), new Vector2d(800, 600)), config, this));
     }
 
     public void draw() {
