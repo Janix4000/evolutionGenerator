@@ -8,4 +8,8 @@ public class Rectangle2d {
         this.position = position;
         this.size = size;
     }
+
+    public boolean isIn(Vector2d pos) {
+        return pos.follow(position) && pos.precedes(position.add(size));
+    }
 }
