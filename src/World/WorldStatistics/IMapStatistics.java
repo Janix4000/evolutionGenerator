@@ -1,4 +1,4 @@
-package World.AnimalStatistics;
+package World.WorldStatistics;
 
 public interface IMapStatistics extends ITextStatistic {
     float getAverageEnergy();

@@ -1,4 +1,4 @@
-package World.AnimalStatistics;
+package World.WorldStatistics;
 
 import World.Entities.Animal;
 import World.IBirthObserver;

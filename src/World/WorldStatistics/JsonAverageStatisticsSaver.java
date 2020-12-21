@@ -1,4 +1,4 @@
-package World.AnimalStatistics;
+package World.WorldStatistics;
 
 import java.io.IOException;
 import java.io.PrintWriter;

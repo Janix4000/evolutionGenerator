@@ -1,8 +1,8 @@
-package World.AnimalStatistics.UI;
+package World.WorldStatistics.UI;
 
 import Utility.UI.Widget;
 import Utility.Vector2d;
-import World.AnimalStatistics.WorldStatistics;
+import World.WorldStatistics.WorldStatistics;
 import processing.core.PGraphics;
 
 public class WorldStatisticsUI extends Widget {
