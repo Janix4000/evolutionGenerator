@@ -1,5 +1,7 @@
 package Utility;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public enum MapDirection {
     S("South", new Vector2d(0, -1)),
     SW("SouthWest", new Vector2d(-1, -1)),
@@ -22,6 +24,10 @@ public enum MapDirection {
         n %= size;
         return values()[(this.ordinal() - n + size) % size];
     }
+    public static MapDirection getRandomDirection() {
+        return values()[ThreadLocalRandom.current().nextInt(0, values().length)];
+    }
+
     public MapDirection next() {
         return next(1);
     }

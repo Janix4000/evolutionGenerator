@@ -23,7 +23,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     private final IWorldMap boundaries;
 
     private Vector2d position;
-    private MapDirection mapDirection = N;
+    private MapDirection mapDirection = MapDirection.getRandomDirection();
 
 
     private int maxEnergy = 1;
