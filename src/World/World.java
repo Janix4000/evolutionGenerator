@@ -2,6 +2,7 @@ package World;
 
 import Utility.Config.IWorldConfig;
 import Utility.CoordinateTransformer;
+import Utility.Rectangle2d;
 import Utility.Vector2d;
 import World.WorldStatistics.IMapStatistics;
 import World.WorldStatistics.JsonAverageStatisticsSaver;
@@ -187,7 +188,7 @@ public class World implements IMapStatistics {
         for (var cell : worldMap) {
             var representative = cell.getRepresentative();
             var pos = coordinateTransformer.toSceneCords(representative.getWorldPosition());
-            representative.draw(mapGraphics, new Utility.Rectangle(pos, cellSize) );
+            representative.draw(mapGraphics, new Rectangle2d(pos, cellSize) );
         }
     }
 

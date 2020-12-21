@@ -1,7 +1,7 @@
 package World.Map;
 
 import Utility.Config.IWorldMapConfig;
-import Utility.Rectangle;
+import Utility.Rectangle2d;
 import Utility.Vector2d;
 import World.Entities.Animal;
 import World.Entities.Grass;
@@ -175,8 +175,8 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         return res;
     }
 
-    public Rectangle getJungleBox() {
-        return new Rectangle(
+    public Rectangle2d getJungleBox() {
+        return new Rectangle2d(
                 jungleRegion.getLowerLeftJunglePos(),
                 jungleRegion.getUpperRightJunglePos().subtract(jungleRegion.getLowerLeftJunglePos())
         );

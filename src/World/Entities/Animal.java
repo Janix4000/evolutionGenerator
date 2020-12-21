@@ -1,6 +1,6 @@
 package World.Entities;
 
-import Utility.Rectangle;
+import Utility.Rectangle2d;
 import Utility.Vector2d;
 import World.IDeathObserver;
 import World.IPositionChangeObserver;
@@ -152,7 +152,7 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     }
 
     @Override
-    public void draw(PGraphics graphics, Rectangle box) {
+    public void draw(PGraphics graphics, Rectangle2d box) {
         var pos = box.position;
         var size = box.size;
         graphics.noStroke();
