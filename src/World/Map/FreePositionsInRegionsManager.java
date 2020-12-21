@@ -58,7 +58,7 @@ public class FreePositionsInRegionsManager {
         return freePos;
     }
 
-    private boolean shouldRandomise() {
+    private boolean shouldRandomise() { // O(sqrt(n))
         int k = freePoses.size();
         int n = maxNCells;
         return 2 * n < k * k;
