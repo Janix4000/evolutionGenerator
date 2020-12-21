@@ -241,9 +241,20 @@ public class World implements IMapStatistics {
     public void processMouseEvent(Vector2d mousePos) {
         var worldPos = coordinateTransformer.toWorldCords(mousePos);
         WorldMapCell cell = worldMap.getCell(worldPos);
-        if(cell != null && cell.hasAnyAnimals()) {
-            var animal = cell.getTopAnimals(1).get(0);
-            statistics.setTarget(animal);
+        if(cell != null) {
+            if(cell.hasAnyAnimals()) {
+                var animal = cell.getTopAnimals(1).get(0);
+                if(!statistics.hasNoTarget() && statistics.getTarget().isEqual(animal)) {
+                    statistics.removeTarget();
+                } else {
+                    statistics.setTarget(animal);
+                }
+            }
+        } else  {
+            var target = statistics.getTarget();
+            if(target != null && worldPos.equals(target.getWorldPosition())) {
+                statistics.removeTarget();
+            }
         }
     }
 

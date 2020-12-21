@@ -98,4 +98,7 @@ public class WorldStatistics implements IAccumulateStatistics {
                 reduce(new HashMap<>(), (a, b) -> { a.putAll(b); return a; });
     }
 
+    public void removeTarget() {
+        animalTargetSystem.removeTarget();
+    }
 }

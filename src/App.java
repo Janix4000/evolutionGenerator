@@ -18,7 +18,7 @@ public class App extends PApplet {
     }
 
     public void settings() {
-        size(1500, 500);
+        size(1500, 700);
     }
 
     public void setup() {
@@ -32,9 +32,9 @@ public class App extends PApplet {
             return;
         }
         frameRate(60);
-        final Vector2d simSize = new Vector2d(width / 2, height);
-        simulations.add(new Simulation(new Rectangle2d(new Vector2d(0 ,0), simSize), config, this));
-        simulations.add(new Simulation(new Rectangle2d(new Vector2d(simSize.x ,0), simSize), config, this));
+        final Vector2d simSize = new Vector2d(width / 2, height - 200);
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(0 ,200), simSize), config, this));
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(simSize.x ,200), simSize), config, this));
     }
 
     public void draw() {
@@ -52,7 +52,21 @@ public class App extends PApplet {
     private void render() {
         background(0);
         this.smooth();
+        drawCommands();
         simulations.forEach(s -> s.draw(this));
+    }
+
+    private void drawCommands() {
+        String text = """
+                Click map with left mouse button to select it.
+                Press space to stop/start simulation in selected map.
+                Click animal with left mouse button to see its statistics (when map is stopped).
+                Press s to save simulations statistics.
+                Animals with best genomes are in yellow frame.
+                """;
+        fill(255);
+        textSize(20);
+        text(text, 10, 30);
     }
 
     @Override
