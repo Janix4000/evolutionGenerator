@@ -37,12 +37,6 @@ public class FreePositionsInRegionsManager {
         return shouldRandomise() ? getRandomisedFreePosition() : getIteratedFreePosition();
     }
 
-    public Vector2d popRandomFreePosition() {
-        Vector2d freePos = getRandomFreePosition();
-        removeFreePosition(freePos);
-        return  freePos;
-    }
-
     private Vector2d getIteratedFreePosition() {
         int idx = ThreadLocalRandom.current().nextInt(0, freePoses.size());
         int i = 0;

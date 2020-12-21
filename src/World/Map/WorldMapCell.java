@@ -3,7 +3,6 @@ package World.Map;
 import World.Entities.Animal;
 import World.Entities.Grass;
 import World.Entities.IWorldElement;
-import World.World;
 
 import java.util.*;
 
@@ -49,7 +48,6 @@ public class WorldMapCell {
             throw new IllegalArgumentException("There is only " + animals.size() + " animals in the cell, wanted top " + n);
         }
         validateAnimalsSort();
-        var topN = new ArrayList<Animal>(n);
         return animals.subList(0, n);
     }
     public List<Animal> getBestAnimals() {

@@ -61,11 +61,9 @@ public class App extends PApplet {
 
         simulations.forEach(s -> s.keyReleased(event));
 
-        if(event.getKey() == 'a') {
+        if(event.getKey() == 's') {
             saveStatistics();
         }
-
-
     }
 
     private void saveStatistics() {

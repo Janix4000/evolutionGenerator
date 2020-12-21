@@ -65,7 +65,7 @@ public class BreedingSystem implements IBirthSender {
         return posPositions.get(0);
     }
 
-    private List<IBirthObserver> observers = new ArrayList<>();
+    private final List<IBirthObserver> observers = new ArrayList<>();
 
     @Override
     public void addObserver(IBirthObserver observer) {
