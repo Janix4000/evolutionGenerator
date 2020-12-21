@@ -43,7 +43,7 @@ public class NLivedDaysStatistics implements IDeathObserver<Animal>, ITextStatis
 
     @Override
     public void updateAccumulation() {
-        sumOfSums += sum;
+        sumOfSums += getAverageLifeSpan();
         nDays++;
     }
 
