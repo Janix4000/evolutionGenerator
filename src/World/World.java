@@ -39,16 +39,18 @@ public class World implements IMapStatistics {
     public World(PApplet ps, IWorldConfig config, Vector2d sceneSize) {
         worldMap = new WorldMap(config.getWorldMapConfig());
         this.sceneSize = sceneSize;
+
         Vector2d mapSize = getMapSize();
         coordinateTransformer = new CoordinateTransformer(worldMap, mapSize);
         breedingSystem = new BreedingSystem(worldMap);
         mapGraphics = ps.createGraphics(this.sceneSize.x, this.sceneSize.y);
         cellSize = new Vector2d(mapSize.x / worldMap.getSize().x, mapSize.y / worldMap.getSize().y);
-        this.config = config;
+
         statistics = new WorldStatistics(this);
         statistics.addBirthSender(breedingSystem);
         statisticsUI = new WorldStatisticsUI(statistics);
 
+        this.config = config;
         spawnFirstAnimals(config.getNStartingAnimals());
     }
 
@@ -179,7 +181,7 @@ public class World implements IMapStatistics {
     }
 
     private void drawUI() {
-        Vector2d pos = new Vector2d(getMapSize().x, 0);
+        Vector2d pos = new Vector2d(getMapSize().x + 10, 0);
         statisticsUI.draw(mapGraphics, pos);
     }
 
@@ -234,11 +236,6 @@ public class World implements IMapStatistics {
             var animal = cell.getTopAnimals(1).get(0);
             statistics.setTarget(animal);
         }
-    }
-
-    public void printAverageStatistics() {
-        var results = statistics.getMapOfResults();
-        results.forEach((key, value) -> System.out.println(key + " " + value));
     }
 
     public void saveStatistics(String fileName) throws IOException {

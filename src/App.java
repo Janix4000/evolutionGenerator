@@ -11,13 +11,14 @@ import java.util.List;
 
 public class App extends PApplet {
     private final List<Simulation> simulations = new ArrayList<>();
+    private Simulation selectedSimulation;
 
     public static void main(String[] args) {
         PApplet.main("App", args);
     }
 
     public void settings() {
-        size(1000, 600);
+        size(1700, 500);
     }
 
     public void setup() {
@@ -31,7 +32,9 @@ public class App extends PApplet {
             return;
         }
         frameRate(60);
-        simulations.add(new Simulation(new Rectangle2d(new Vector2d(0 ,0), new Vector2d(850, 600)), config, this));
+        final Vector2d simSize = new Vector2d(width / 2, height);
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(0 ,0), simSize), config, this));
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(simSize.x ,0), simSize), config, this));
     }
 
     public void draw() {
@@ -85,5 +88,18 @@ public class App extends PApplet {
         super.mouseClicked();
         Vector2d mousePos = new Vector2d(mouseX, mouseY);
         simulations.forEach(s -> s.mouseClicked(mousePos));
+        handleSelection(mousePos);
+    }
+
+    private void handleSelection(Vector2d mousePos) {
+        simulations.forEach(s -> {
+            if(s.getScreenBox().isIn(mousePos)) {
+                if(selectedSimulation != null) {
+                    selectedSimulation.unselect();
+                }
+                selectedSimulation = s;
+                s.select();
+            }
+        });
     }
 }

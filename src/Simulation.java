@@ -16,11 +16,12 @@ public class Simulation {
     private float tickCooldown = 0;
     private int nTicksPerSecond = 20;
     private AppState state = AppState.Running;
+    private boolean isSelected = false;
 
 
     public Simulation(Rectangle2d screenBox, Config config, PApplet ps) {
         this.screenBox = screenBox;
-        world = new World(ps, config, new Vector2d(800, 600));
+        world = new World(ps, config, screenBox.size);
     }
 
     public void update(float dt) {
@@ -37,11 +38,20 @@ public class Simulation {
     public void draw(PApplet ps) {
         var worldGraphic = world.draw();
         ps.image(worldGraphic, screenBox.position.x ,screenBox.position.y);
+        if(isSelected) {
+            ps.stroke(255, 0, 0);
+            ps.strokeWeight(5);
+            ps.noFill();
+            ps.rect(screenBox.position.x ,screenBox.position.y, screenBox.size.x, screenBox.size.y);
+        }
     }
 
     void keyReleased(KeyEvent event) {
         final int leftKeyCode = 37;
         final int rightKeyCode = 39;
+        if(!isSelected) {
+            return;
+        }
         if (event.getKey() == ' ') {
             state = state.flip();
         }
@@ -66,5 +76,17 @@ public class Simulation {
         if(state == AppState.Stopped) {
             world.processMouseEvent(mousePos.subtract(screenBox.position));
         }
+    }
+
+    public void select() {
+        isSelected = true;
+    }
+
+    public void unselect() {
+        isSelected = false;
+    }
+
+    public Rectangle2d getScreenBox() {
+        return screenBox;
     }
 }
