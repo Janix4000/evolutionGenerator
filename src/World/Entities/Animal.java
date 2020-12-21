@@ -2,8 +2,8 @@ package World.Entities;
 
 import Utility.Rectangle2d;
 import Utility.Vector2d;
-import World.IDeathObserver;
-import World.IPositionChangeObserver;
+import World.ObserversInterfaces.IDeathObserver;
+import World.ObserversInterfaces.IPositionChangeObserver;
 import World.Map.IWorldMap;
 import Utility.MapDirection;
 import processing.core.PGraphics;
@@ -168,11 +168,6 @@ public class Animal implements IWorldElement, IPositionChangeSender<Animal>, Com
     @Override
     public void removePositionObserver(IPositionChangeObserver<Animal> observer) {
         this.positionObservers.remove(observer);
-    }
-
-    @Override
-    public IWorldElement getWorldElement() {
-        return this;
     }
 
     private void positionChanged(Vector2d oldPos) {

@@ -1,8 +1,8 @@
 package World.WorldStatistics;
 
 import World.Entities.Animal;
-import World.IBirthObserver;
-import World.IDeathObserver;
+import World.ObserversInterfaces.IBirthObserver;
+import World.ObserversInterfaces.IDeathObserver;
 
 import java.util.HashMap;
 

@@ -1,7 +1,7 @@
 package World.WorldStatistics;
 
 import World.Entities.Animal;
-import World.IDeathObserver;
+import World.ObserversInterfaces.IDeathObserver;
 
 import java.util.HashMap;
 

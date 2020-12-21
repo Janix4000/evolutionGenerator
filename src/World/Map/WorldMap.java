@@ -5,8 +5,8 @@ import Utility.Rectangle2d;
 import Utility.Vector2d;
 import World.Entities.Animal;
 import World.Entities.Grass;
-import World.IDeathObserver;
-import World.IPositionChangeObserver;
+import World.ObserversInterfaces.IDeathObserver;
+import World.ObserversInterfaces.IPositionChangeObserver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,7 +79,6 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
             freePositionsManager.addFreePosition(position);
         }
     }
-
 
     private void removeFromProperCell(Grass grass) {
         var pos = grass.getWorldPosition();

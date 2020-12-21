@@ -2,8 +2,8 @@ package World.Systems;
 
 import Utility.Vector2d;
 import World.Entities.Animal;
-import World.IBirthObserver;
-import World.IBirthSender;
+import World.ObserversInterfaces.IBirthObserver;
+import World.ObserversInterfaces.IBirthSender;
 import World.Map.IWorldMap;
 import World.Map.WorldMapCell;
 

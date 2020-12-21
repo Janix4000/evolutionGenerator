@@ -1,6 +1,6 @@
 package World.Entities;
 
-import World.IPositionChangeObserver;
+import World.ObserversInterfaces.IPositionChangeObserver;
 
 public interface IPositionChangeSender<T> {
     void addPositionObserver(IPositionChangeObserver<T> observer);

@@ -1,7 +1,7 @@
 package World.WorldStatistics;
 
 import World.Entities.Animal;
-import World.IBirthSender;
+import World.ObserversInterfaces.IBirthSender;
 
 import java.util.*;
 
