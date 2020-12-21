@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.StrictMath.floor;
 import static java.lang.StrictMath.round;
 
 public class World implements IMapStatistics {
@@ -39,6 +40,7 @@ public class World implements IMapStatistics {
     public World(PApplet ps, IWorldConfig config, Vector2d sceneSize) {
         worldMap = new WorldMap(config.getWorldMapConfig());
         this.sceneSize = sceneSize;
+        this.config = config;
 
         Vector2d mapSize = getMapSize();
         coordinateTransformer = new CoordinateTransformer(worldMap, mapSize);
@@ -50,7 +52,6 @@ public class World implements IMapStatistics {
         statistics.addBirthSender(breedingSystem);
         statisticsUI = new WorldStatisticsUI(statistics);
 
-        this.config = config;
         spawnFirstAnimals(config.getNStartingAnimals());
     }
 
@@ -177,7 +178,15 @@ public class World implements IMapStatistics {
     }
 
     private Vector2d getMapSize() {
-        return sceneSize.subtract(new Vector2d(statisticsWidth, 0));
+        var maxSpace = sceneSize.subtract(new Vector2d(statisticsWidth, 0));
+        var size = config.getWorldMapConfig().getWorldSize();
+        Vector2d finalSpace;
+        if(maxSpace.x * size.y > maxSpace.y * size.x) {
+            finalSpace = new Vector2d (size.x * maxSpace.y / size.y, maxSpace.y);
+        } else {
+            finalSpace = new Vector2d (maxSpace.x, size.y * maxSpace.x / size.x);
+        }
+        return finalSpace;
     }
 
     private void drawUI() {

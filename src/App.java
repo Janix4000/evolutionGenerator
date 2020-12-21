@@ -18,7 +18,7 @@ public class App extends PApplet {
     }
 
     public void settings() {
-        size(1900, 500);
+        size(1500, 500);
     }
 
     public void setup() {
