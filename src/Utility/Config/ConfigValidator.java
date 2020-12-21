@@ -26,12 +26,12 @@ public class ConfigValidator {
         validations.put(json -> {
             int moveCost = json.getInt("moveEnergy");
             return  moveCost > 0;
-        }, "Move energy should be positive");
+        }, "Move energy should be positive.");
 
         validations.put(json -> {
             int grassEnergy = json.getInt("plantEnergy");
             return  grassEnergy > 0;
-        }, "Grass energy should be positive");
+        }, "Grass energy should be positive.");
     }
 
     private static void addNStartingAnimalsValidations(HashMap<Function<JSONObject, Boolean>, String> validations) {
