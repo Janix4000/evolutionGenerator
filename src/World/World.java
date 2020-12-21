@@ -33,7 +33,7 @@ public class World implements IMapStatistics {
     IWorldConfig config;
     private final WorldStatistics statistics;
     private final WorldStatisticsUI statisticsUI;
-    static private final int statisticsWidth = 200;
+    static private final int statisticsWidth = 250;
     private final Vector2d sceneSize;
 
     public World(PApplet ps, IWorldConfig config, Vector2d sceneSize) {

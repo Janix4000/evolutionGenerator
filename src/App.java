@@ -31,7 +31,7 @@ public class App extends PApplet {
             return;
         }
         frameRate(60);
-        simulations.add(new Simulation(new Rectangle2d(new Vector2d(100 ,0), new Vector2d(800, 600)), config, this));
+        simulations.add(new Simulation(new Rectangle2d(new Vector2d(0 ,0), new Vector2d(850, 600)), config, this));
     }
 
     public void draw() {
