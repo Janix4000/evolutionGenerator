@@ -10,7 +10,7 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, ITextStatis
         if(a.size() == b.size()) {
             return a.get(0).getGenomeString().compareTo(b.get(0).getGenomeString());
         }
-        return -(a.size() - b.size());
+        return a.size() - b.size();
     });
     private final HashMap<String, Integer> bestGenomes = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class BestGenomeStatistics implements IDeathObserver<Animal>, ITextStatis
         if(genes.isEmpty()) {
             return new ArrayList<>();
         }
-        return genes.first();
+        return genes.last();
     }
 
 

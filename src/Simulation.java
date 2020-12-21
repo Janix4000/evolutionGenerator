@@ -15,7 +15,7 @@ public class Simulation {
     private final World world;
     private float tickCooldown = 0;
     private int nTicksPerSecond = 20;
-    private AppState state = AppState.Running;
+    private boolean isRunning = true;
     private boolean isSelected = false;
 
 
@@ -25,7 +25,7 @@ public class Simulation {
     }
 
     public void update(float dt) {
-        if(state == AppState.Stopped) {
+        if(!isRunning) {
             return;
         }
         tickCooldown -= dt;
@@ -53,9 +53,9 @@ public class Simulation {
             return;
         }
         if (event.getKey() == ' ') {
-            state = state.flip();
+            isRunning = !isRunning;
         }
-        if(state == AppState.Running) {
+        if(isRunning) {
             if (event.getKeyCode() == leftKeyCode) {
                 nTicksPerSecond = max(1, nTicksPerSecond - 1);
             } else if (event.getKeyCode() == rightKeyCode) {
@@ -73,7 +73,7 @@ public class Simulation {
     }
 
     public void mouseClicked(Vector2d mousePos) {
-        if(state == AppState.Stopped) {
+        if(!isRunning) {
             world.processMouseEvent(mousePos.subtract(screenBox.position));
         }
     }
