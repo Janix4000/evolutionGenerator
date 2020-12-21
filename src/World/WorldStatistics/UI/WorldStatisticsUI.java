@@ -18,7 +18,7 @@ public class WorldStatisticsUI extends Widget {
         super.draw(ps, pos);
         Vector2d finalPos = pos.add(getPosition());
         ps.fill(255);
-        ps.textSize(10);
+        ps.textSize(12);
         String text = statistics.getTextStatistics().stream().reduce("", (t, s) -> t + "\n" + s.getText(), (i, t) -> i + t);
         ps.text(text, finalPos.x, finalPos.y);
     }

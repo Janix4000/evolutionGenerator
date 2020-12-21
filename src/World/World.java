@@ -190,7 +190,7 @@ public class World implements IMapStatistics {
     }
 
     private void drawUI() {
-        Vector2d pos = new Vector2d(getMapSize().x + 10, 0);
+        Vector2d pos = new Vector2d(getMapSize().x + 5, 0);
         statisticsUI.draw(mapGraphics, pos);
     }
 

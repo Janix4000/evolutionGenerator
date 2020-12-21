@@ -61,6 +61,7 @@ public class App extends PApplet {
                 Click map with left mouse button to select it.
                 Press space to stop/start simulation in selected map.
                 Click animal with left mouse button to see its statistics (when map is stopped).
+                Click again this animal to unselect.
                 Press s to save simulations statistics.
                 Animals with best genomes are in yellow frame.
                 """;
