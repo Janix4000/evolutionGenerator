@@ -11,16 +11,20 @@ public class Config implements IWorldConfig, IWorldMapConfig{
     private final int grassEnergy;
     private final int moveCost;
 
-    public Config(JSONObject json) {
-        nStartingAnimals = json.getInt("nStartingAnimals");
-        startingEnergy = json.getInt("startEnergy");
-        moveCost = json.getInt("moveEnergy");
-        grassEnergy = json.getInt("plantEnergy");
-        int width = json.getInt("width");
-        int height = json.getInt("height");
-        mapSize = new Vector2d(width, height);
-        float jungleRatio = json.getFloat("jungleRatio");
-        jungleSize = new Vector2d((int) (jungleRatio * width), (int) (jungleRatio * height));
+    public Config(JSONObject json) throws IllegalArgumentException {
+        try {
+            nStartingAnimals = json.getInt("nStartingAnimals");
+            startingEnergy = json.getInt("startEnergy");
+            moveCost = json.getInt("moveEnergy");
+            grassEnergy = json.getInt("plantEnergy");
+            int width = json.getInt("width");
+            int height = json.getInt("height");
+            mapSize = new Vector2d(width, height);
+            float jungleRatio = json.getFloat("jungleRatio");
+            jungleSize = new Vector2d((int) (jungleRatio * width), (int) (jungleRatio * height));
+        } catch (RuntimeException e) {
+            throw new IllegalArgumentException("There are no parameters in got json config in Config constructor\n" + e.getMessage());
+        }
     }
 
 

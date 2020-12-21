@@ -105,6 +105,9 @@ public class App extends PApplet {
     }
 
     private void handleSelection(Vector2d mousePos) {
+        if(selectedSimulation != null) {
+            selectedSimulation.unselect();
+        }
         simulations.forEach(s -> {
             if(s.getScreenBox().isIn(mousePos)) {
                 if(selectedSimulation != null) {

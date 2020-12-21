@@ -84,7 +84,11 @@ public class World implements IMapStatistics {
 
     private void spawnFirstAnimals(int n) {
         for (int i = 0; i < n; ++i) {
-            addAnimal(Vector2d.getRandom(worldMap.getLowerLeft(), worldMap.getUpperRight()));
+            var position = worldMap.getRandomFreePosition();
+            if(position == null) {
+                break;
+            }
+            addAnimal(worldMap.getRandomFreePosition());
         }
         for (int i = 0; i < n; ++i) {
             spawnGrass();

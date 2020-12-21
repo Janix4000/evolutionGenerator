@@ -174,6 +174,14 @@ public class WorldMap implements IPositionChangeObserver<Animal>, Iterable<World
         return res;
     }
 
+    public Vector2d getRandomFreePosition() {
+        Vector2d res = freePositionsManager.getRandomFreePositionInJungle();
+        if(res == null) {
+            res = freePositionsManager.getRandomFreePositionOutsideJungle();
+        }
+        return res;
+    }
+
     public Rectangle2d getJungleBox() {
         return new Rectangle2d(
                 jungleRegion.getLowerLeftJunglePos(),
